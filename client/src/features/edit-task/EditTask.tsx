@@ -1,7 +1,28 @@
-const AddTask = () => {
+import { FC, useEffect, useState } from "react"
+import { useTaskQuery } from "../../entities"
+
+const EditTask: FC<{ id: string }> = ({ id }) => {
+  const { update, task } = useTaskQuery(id)
+  const [form, setForm] = useState({ title: "", description: "" })
+
+  useEffect(() => {
+    setForm({ title: task.title, description: task.description || "" })
+  }, [task])
+
+  const submitHandler = () => {
+    update({
+      _id: task._id,
+      ...form,
+      checked: task.checked,
+      category: task.category._id,
+      order: 0,
+    })
+    setForm({ title: "", description: "" })
+  }
+
   return (
     <>
-      <h3 className="text-center">Add task</h3>
+      <h3 className="text-center">Edit task</h3>
 
       <div className="form-control">
         <label className="label">
@@ -11,6 +32,8 @@ const AddTask = () => {
           type="text"
           placeholder="Enter task name"
           className="input input-bordered w-full"
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
         />
         <label className="label">
           <span className="label-text">Description</span>
@@ -18,6 +41,8 @@ const AddTask = () => {
         <textarea
           className="textarea textarea-bordered h-24 resize-none"
           placeholder="Enter description"
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
         ></textarea>
       </div>
 
@@ -67,6 +92,7 @@ const AddTask = () => {
           <label
             htmlFor="my-modal"
             className="btn btn-primary btn-sm text-primary-content"
+            onClick={submitHandler}
           >
             Done
           </label>
@@ -76,4 +102,4 @@ const AddTask = () => {
   )
 }
 
-export default AddTask
+export default EditTask

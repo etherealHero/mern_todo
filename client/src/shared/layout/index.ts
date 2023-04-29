@@ -1,4 +1,4 @@
-import LayoutProvider from "./LayoutProvider"
+import Layout from "./Layout"
 import { useModalContext } from "./ModalContext"
 
-export { LayoutProvider, useModalContext }
+export { Layout, useModalContext }

@@ -1,6 +1,8 @@
 export const config = {
-  lightTheme: "light",
-  darkTheme: "dark",
+  // lightTheme: "light",
+  // darkTheme: "dark",
+  lightTheme: "winter",
+  darkTheme: "night",
   themes: [
     ["light", "light"],
     ["cupcake", "light"],

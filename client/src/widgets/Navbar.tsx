@@ -1,6 +1,11 @@
+import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../entities"
 import { Logout, ThemeToggle } from "../features"
 
 const Navbar = () => {
+  const { token } = useAuthContext()
+  const navigate = useNavigate()
+
   return (
     // <div className="navbar bg-base-300 text-base-content">
     <div className="navbar px-0">
@@ -23,33 +28,35 @@ const Navbar = () => {
       </div>
       <div className="flex-none">
         <ThemeToggle />
-        <div className="dropdown dropdown-end">
-          <label
-            tabIndex={0}
-            className="btn btn-ghost btn-circle avatar placeholder"
-          >
-            <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
-              <span>MX</span>
-            </div>
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-compact  dropdown-content mt-3 p-2 shadow bg-base-100 text-base-content rounded-box w-52"
-          >
-            <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
-            </li>
-            <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <Logout />
-            </li>
-          </ul>
-        </div>
+        {token && (
+          <div className="dropdown dropdown-end">
+            <label
+              tabIndex={0}
+              className="btn btn-ghost btn-circle avatar placeholder"
+            >
+              <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
+                <span>MX</span>
+              </div>
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-compact  dropdown-content mt-3 p-2 shadow bg-base-100 text-base-content rounded-box w-48"
+            >
+              <li>
+                <a className="justify-between" onClick={() => navigate("/")}>
+                  Dashboard
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a>Settings</a>
+              </li>
+              <li>
+                <Logout />
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   )

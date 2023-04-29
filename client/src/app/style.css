@@ -17,7 +17,7 @@
 
 @layer base {
   * {
-    @apply select-none;
+    @apply select-none scrollbar-hide;
   }
 
   html,

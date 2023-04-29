@@ -8,7 +8,7 @@ const Categories = () => {
 
   return (
     <>
-      <div className="mx-4 mt-0 flex items-end gap-x-3">
+      <div className="mt-0 flex items-end gap-x-3">
         <h2>Categories</h2>
         <label
           htmlFor="my-modal"

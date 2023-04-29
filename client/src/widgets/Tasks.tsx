@@ -1,14 +1,26 @@
-import { AddTask } from "../features"
-import { useModalContext } from "../shared"
+import { useEffect, useRef } from "react"
+import { AddTask, TaskController, TaskToggle } from "../features"
+import { Task, useTaskQuery } from "../entities"
+import { useModalContext, useWindowSize } from "../shared"
 
 const Tasks = () => {
-  const { setModalChild } = useModalContext()
+  const ref = useRef<HTMLUListElement>(null)
+  const [_, windowHeight] = useWindowSize()
 
+  useEffect(() => {
+    if (!ref.current) return
+    const coords = ref.current.getBoundingClientRect()
+    ref.current.style.height = windowHeight - 16 - coords.top + "px"
+  }, [ref, windowHeight])
+
+  const { setModalChild } = useModalContext()
   const modalHandler = () => setModalChild(<AddTask />)
+
+  const { tasks } = useTaskQuery()
 
   return (
     <>
-      <div className="mx-4 mt-0 flex items-end gap-x-3">
+      <div className="mt-0 flex items-end gap-x-3 mb-6">
         <h2>Tasks</h2>
         <label
           htmlFor="my-modal"
@@ -18,6 +30,14 @@ const Tasks = () => {
           + Add
         </label>
       </div>
+      <ul ref={ref} className="overflow-scroll">
+        {tasks?.map(({ _id }) => (
+          <Task id={_id} key={_id}>
+            <TaskController id={_id} />
+            <TaskToggle id={_id} />
+          </Task>
+        ))}
+      </ul>
     </>
   )
 }

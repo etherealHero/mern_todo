@@ -1,0 +1,84 @@
+import { API_URL } from "../../shared"
+import { useAuth } from "../auth/useAuth"
+
+export const useTaskApi = () => {
+  const { token } = useAuth()
+
+  const getTasks = () => {
+    return fetch(`${API_URL}/task`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => data)
+  }
+
+  interface newTask {
+    title: string
+    category: string
+    order: number
+    description?: string
+  }
+
+  const postTask = (newTask: newTask) => {
+    return fetch(`${API_URL}/task/create`, {
+      method: "POST",
+      body: JSON.stringify(newTask),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+  }
+
+  const removeTask = (id: string) => {
+    return fetch(`${API_URL}/task/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => data)
+  }
+
+  interface patchedTask {
+    title: string
+    description: string
+    _id: string
+    category: string
+    order: number
+    checked: boolean
+  }
+
+  const patchTast = (task: patchedTask) => {
+    return fetch(`${API_URL}/task`, {
+      method: "PUT",
+      body: JSON.stringify(task),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+  }
+
+  const swapTask = (opt: { _id: string; _id2: string }) => {
+    return fetch(`${API_URL}/task/swap`, {
+      method: "PUT",
+      body: JSON.stringify(opt),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+  }
+
+  return {
+    getTasks,
+    postTask,
+    removeTask,
+    patchTast,
+    swapTask,
+  }
+}

@@ -26,9 +26,15 @@ router.post(
       }
 
       const { id } = req.user
-      const { title, category, order } = req.body
+      const { title, category, order, description } = req.body
 
-      const newTask = new Task({ title, category, order, owner: id })
+      const newTask = new Task({
+        title,
+        category,
+        order,
+        description,
+        owner: id,
+      })
       await newTask.save()
 
       res.status(200).json({ message: "Задача создана" })
@@ -45,7 +51,7 @@ router.get("/", authMiddleware, async (req, res) => {
 
     const tasks = await Task.find({ owner: id }).populate("category", "color")
 
-    res.json(tasks)
+    res.json(tasks.sort((t1, t2) => (t1.order > t2.order ? -1 : 1)))
   } catch (error) {
     res.status(500).json({ message: "Что-то пошло не так" })
     console.log(error)
@@ -92,11 +98,11 @@ router.put(
       }
 
       const { id } = req.user
-      const { title, _id, category, order, checked } = req.body
+      const { title, _id, category, order, checked, description } = req.body
 
       const task = await Task.findOneAndUpdate(
         { owner: id, _id },
-        { title, category, order, checked },
+        { title, category, order, checked, description },
         { new: true }
       )
 
@@ -105,6 +111,40 @@ router.put(
       }
 
       res.json(task)
+    } catch (error) {
+      res.status(500).json({ message: "Что-то пошло не так" })
+      console.log(error)
+    }
+  }
+)
+
+router.put(
+  "/swap",
+  [authMiddleware, check("_id").exists(), check("_id2").exists()],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req)
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          errors: errors.array(),
+          message: "Некорректные данные для обновления",
+        })
+      }
+
+      const { id } = req.user
+      const { _id, _id2 } = req.body
+
+      const task = await Task.findOne({ _id, owner: id })
+      const task2 = await Task.findOne({ _id: _id2, owner: id })
+      const swapOrder = task.order
+      task.order = task2.order
+      task2.order = swapOrder
+
+      await task.save()
+      await task2.save()
+
+      res.json("swap success")
     } catch (error) {
       res.status(500).json({ message: "Что-то пошло не так" })
       console.log(error)
