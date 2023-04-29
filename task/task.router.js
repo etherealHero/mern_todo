@@ -1,19 +1,19 @@
 import { Router } from "express"
-import bcryptjs from "bcryptjs"
 import { check, validationResult } from "express-validator"
-import jwt from "jsonwebtoken"
 
-import * as dotenv from "dotenv"
-dotenv.config()
-
-import Note from "./note.model.js"
+import Task from "./task.model.js"
 import authMiddleware from "../auth/auth.middleware.js"
 
 const router = Router()
 
 router.post(
   "/create",
-  [authMiddleware, check("title", "Заметка не может быть пустой").notEmpty()],
+  [
+    authMiddleware,
+    check("title", "Не задано название задачи").notEmpty(),
+    check("category", "Не задана категория").notEmpty(),
+    check("order", "Не задан порядковый номер категории").notEmpty(),
+  ],
   async (req, res) => {
     try {
       const errors = validationResult(req)
@@ -26,12 +26,12 @@ router.post(
       }
 
       const { id } = req.user
-      const { title } = req.body
+      const { title, category, order } = req.body
 
-      const newNote = new Note({ title, owner: id })
-      await newNote.save()
+      const newTask = new Task({ title, category, order, owner: id })
+      await newTask.save()
 
-      res.status(200).json({ message: "Заметка создана" })
+      res.status(200).json({ message: "Задача создана" })
     } catch (error) {
       res.status(500).json({ message: "Что-то пошло не так" })
       console.log(error)
@@ -43,9 +43,9 @@ router.get("/", authMiddleware, async (req, res) => {
   try {
     const { id } = req.user
 
-    const notes = await Note.find({ owner: id })
+    const tasks = await Task.find({ owner: id }).populate("category", "color")
 
-    res.json(notes)
+    res.json(tasks)
   } catch (error) {
     res.status(500).json({ message: "Что-то пошло не так" })
     console.log(error)
@@ -55,15 +55,15 @@ router.get("/", authMiddleware, async (req, res) => {
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.user
-    const noteId = req.params.id
+    const taskId = req.params.id
 
-    const note = await Note.findOneAndDelete({ owner: id, _id: noteId })
+    const task = await Task.findOneAndDelete({ owner: id, _id: taskId })
 
-    if (!note) {
+    if (!task) {
       return res.status(400).json({ message: "Что-то пошло не так" })
     }
 
-    res.json(note)
+    res.json(task)
   } catch (error) {
     res.status(500).json({ message: "Что-то пошло не так" })
     console.log(error)
@@ -74,7 +74,10 @@ router.put(
   "/",
   [
     authMiddleware,
-    check("title", "Заметка не может быть пустой").notEmpty(),
+    check("title", "Не задано название задачи").notEmpty(),
+    check("category", "Не задана категория").notEmpty(),
+    check("order", "Не задан порядковый номер категории").notEmpty(),
+    check("checked", "Checked is empty").notEmpty(),
     check("_id").exists(),
   ],
   async (req, res) => {
@@ -89,19 +92,19 @@ router.put(
       }
 
       const { id } = req.user
-      const { title, _id } = req.body
+      const { title, _id, category, order, checked } = req.body
 
-      const note = await Note.findOneAndUpdate(
+      const task = await Task.findOneAndUpdate(
         { owner: id, _id },
-        { title },
+        { title, category, order, checked },
         { new: true }
       )
 
-      if (!note) {
+      if (!task) {
         return res.status(400).json({ message: "Что-то пошло не так" })
       }
 
-      res.json(note)
+      res.json(task)
     } catch (error) {
       res.status(500).json({ message: "Что-то пошло не так" })
       console.log(error)

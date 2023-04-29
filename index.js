@@ -6,7 +6,8 @@ import * as dotenv from "dotenv"
 dotenv.config()
 
 import AuthRouter from "./auth/auth.router.js"
-import NotesRouter from "./note/note.router.js"
+import CategoryRouter from "./category/category.router.js"
+import TaskRouter from "./task/task.router.js"
 
 const app = express()
 app.use(express.json())
@@ -16,7 +17,8 @@ const PORT = process.env.PORT || 3001
 const DB_URL = process.env.DB_URL || ""
 
 app.use("/api/auth", AuthRouter)
-app.use("/api/notes", NotesRouter)
+app.use("/api/category", CategoryRouter)
+app.use("/api/task", TaskRouter)
 
 const start = async () => {
   try {
