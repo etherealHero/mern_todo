@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom"
-import { ThemeToggle } from "../features"
+import { Logout, ThemeToggle } from "../features"
 
 const Navbar = () => {
   return (
     // <div className="navbar bg-base-300 text-base-content">
-    <div className="navbar ">
+    <div className="navbar px-0">
       <div className="flex-1">
         <label htmlFor="my-drawer" className="btn btn-square btn-ghost">
           <svg
@@ -47,7 +46,7 @@ const Navbar = () => {
               <a>Settings</a>
             </li>
             <li>
-              <Link to="/login">Logout</Link>
+              <Logout />
             </li>
           </ul>
         </div>

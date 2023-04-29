@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom"
-import { Navbar } from "../widgets"
-import { ThemeChanger } from "../features"
+import { Categories, Drawer, Navbar, Tasks } from "../widgets"
 import { useAuthContext } from "../entities"
+import { LayoutProvider } from "../shared"
 
 const Dashboard = () => {
   const { token } = useAuthContext()
@@ -11,16 +11,13 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="max-w-2xl w-full mx-auto">
-      <Navbar />
-      <div className="flex flex-col gap-y-4 max-w-xs mb-4">
-        <button className="btn btn-accent">Accent</button>
-        <button className="btn btn-secondary">Secondary</button>
-        <button className="btn">Base</button>
+    <LayoutProvider drawer={<Drawer />}>
+      <div className="max-w-2xl w-full mx-auto">
+        <Navbar />
+        <Categories />
+        <Tasks />
       </div>
-      <ThemeChanger />
-      <br />
-    </div>
+    </LayoutProvider>
   )
 }
 
