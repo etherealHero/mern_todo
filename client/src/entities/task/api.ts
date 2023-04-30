@@ -1,3 +1,4 @@
+import type { ITask } from "./model"
 import { API_URL } from "../../shared"
 import { useAuth } from "../auth/useAuth"
 
@@ -21,7 +22,7 @@ export const useTaskApi = () => {
     description?: string
   }
 
-  const postTask = (newTask: newTask) => {
+  const postTask = (newTask: newTask): Promise<ITask> => {
     return fetch(`${API_URL}/task/create`, {
       method: "POST",
       body: JSON.stringify(newTask),
@@ -29,7 +30,7 @@ export const useTaskApi = () => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-    })
+    }).then((res) => res.json())
   }
 
   const removeTask = (id: string) => {

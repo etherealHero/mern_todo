@@ -19,6 +19,7 @@ const Task: FC<ITaskProps> = ({ id, children }) => {
             {task.description}
           </p>
         </div>
+        {/* <span className="text-info outline outline-1">{task.order}</span> */}
       </div>
     </li>
   )
