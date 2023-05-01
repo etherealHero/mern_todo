@@ -15,7 +15,7 @@ const EditTask: FC<{ id: string }> = ({ id }) => {
       ...form,
       checked: task.checked,
       category: task.category._id,
-      order: 0,
+      order: task.order,
     })
     setForm({ title: "", description: "" })
   }

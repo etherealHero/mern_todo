@@ -5,7 +5,7 @@ const TaskSchema = new Schema({
   description: { type: String },
   owner: { type: ObjectId, required: true, ref: "User" },
   category: { type: ObjectId, required: true, ref: "Category" },
-  order: { type: Number, required: true, unique: true },
+  order: { type: Number, required: true},
   checked: { type: Boolean, default: false },
 })
 

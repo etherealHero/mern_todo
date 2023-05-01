@@ -3,7 +3,7 @@ import { useTaskQuery } from "../../entities"
 
 const AddTask = () => {
   const [form, setForm] = useState({ title: "", description: "" })
-  const { tasks, addTaskL } = useTaskQuery()
+  const { tasks, create } = useTaskQuery()
 
   const submitHandler = () => {
     const arr: number[] = [0]
@@ -11,7 +11,7 @@ const AddTask = () => {
 
     const maxOrder = Math.max(...arr)
 
-    addTaskL.mutate({
+    create({
       ...form,
       category: "644cccbd5c237c725b466d86",
       order: maxOrder + 1,

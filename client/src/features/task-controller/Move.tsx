@@ -3,20 +3,20 @@ import { Icon } from "../../shared"
 import { useTaskQuery } from "../../entities"
 
 const Move: FC<{ id: string }> = ({ id }) => {
-  const { task: current, tasks, swap, isSwapping } = useTaskQuery(id)
+  const { task: current, tasks, swap } = useTaskQuery(id)
 
   const currentIdx = (tasks || [])?.findIndex((t) => t._id === current._id)
 
   const nextSwapHandler = () => {
     const next = (tasks || [])[currentIdx + 1]
-    if (!next || isSwapping) return
+    if (!next) return
     swap({ _id: current._id, _id2: next._id })
     console.log(next)
   }
 
   const prevSwapHandler = () => {
     const prev = (tasks || [])[currentIdx - 1]
-    if (!prev || isSwapping) return
+    if (!prev) return
     swap({ _id: current._id, _id2: prev._id })
     console.log(prev)
   }

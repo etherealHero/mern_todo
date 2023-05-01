@@ -48,6 +48,7 @@ export const useTaskApi = () => {
     title: string
     description: string
     _id: string
+    _id2?: string
     category: string
     order: number
     checked: boolean
