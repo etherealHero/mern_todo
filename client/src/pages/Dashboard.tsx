@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom"
-import { Tasks } from "../widgets"
+import { Categories, Tasks } from "../widgets"
 import { useAuthContext } from "../entities"
 
 const Dashboard = () => {
@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   return (
     <div className="max-w-2xl w-full mx-auto">
-      {/* <Categories /> */}
+      <Categories />
       <Tasks />
     </div>
   )

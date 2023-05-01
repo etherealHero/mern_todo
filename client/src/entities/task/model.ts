@@ -86,11 +86,10 @@ export const useTaskQuery = (id?: string) => {
       const updatedTask = prevTasks?.find((t) => t._id === vars._id)
 
       const optimisticTask: ITask = {
-        ...updatedTask,
+        ...(updatedTask as ITask),
         _id: vars._id,
         title: vars.title,
-        description: vars.description || "",
-        owner: "_",
+        description: vars.description,
         category: {
           _id: vars.category,
           color: "accent",
