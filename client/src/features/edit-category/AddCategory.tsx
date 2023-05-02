@@ -18,6 +18,7 @@ const AddCategory = () => {
       order: maxOrder + 1,
     })
     setTitle("")
+    setColor("error")
   }
 
   return (

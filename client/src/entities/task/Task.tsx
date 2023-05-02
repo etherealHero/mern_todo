@@ -14,12 +14,21 @@ const Task: FC<ITaskProps> = ({ id, children }) => {
       <div className="card-body p-4 pr-[72px] flex flex-row items-center gap-4">
         {children}
         <div className="w-full">
-          <h3 className="card-title break-words">{task.title}</h3>
-          <p className="text-base-content/50 mt-0 break-words">
+          <h3
+            className={`card-title break-words ${
+              task.checked && "line-through text-base-content/50"
+            }`}
+          >
+            {task.title}
+          </h3>
+          <p
+            className={`text-base-content/50 mt-0 break-words ${
+              task.checked && "line-through"
+            }`}
+          >
             {task.description}
           </p>
         </div>
-        {/* <span className="p-1 border border-info">{task.order}</span> */}
       </div>
     </li>
   )
