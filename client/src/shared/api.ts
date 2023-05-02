@@ -1,1 +1,1 @@
-export const API_URL = "http://192.168.227.61:5000/api"
+export const API_URL = "https://gutsan-mern-server.vercel.app/api"
