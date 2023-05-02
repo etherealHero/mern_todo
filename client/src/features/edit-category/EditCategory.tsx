@@ -1,12 +1,48 @@
-import { useState } from "react"
+import { FC, useEffect, useState } from "react"
+import { ITask, useCategoryQuery, useTaskQuery } from "../../entities"
+import { useQueryClient } from "@tanstack/react-query"
 
-const AddCategory = () => {
+const EditCategory: FC<{ id: string }> = ({ id }) => {
   const [title, setTitle] = useState<string>("")
-  const [_, setColor] = useState<string>("")
+  const [color, setColor] = useState<string>("")
+  const { category, update } = useCategoryQuery(id)
+  const { queryKey } = useTaskQuery()
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    setTitle(category.title)
+    setColor(category.color)
+  }, [category])
+
+  const submitHandler = () => {
+    update({
+      _id: category._id,
+      title: title || category.title,
+      color: color || category.color,
+      order: category.order,
+    })
+
+    queryClient.setQueryData<ITask[]>(queryKey, (tasks) =>
+      (tasks || []).map((t) => {
+        if (t.category._id === category._id)
+          return {
+            ...t,
+            category: {
+              _id: category._id,
+              color,
+            },
+          }
+
+        return t
+      })
+    )
+
+    setTitle("")
+  }
 
   return (
     <>
-      <h2 className="text-center">Add category</h2>
+      <h2 className="text-center">Edit category</h2>
 
       <div className="form-control">
         <label className="label">
@@ -27,44 +63,51 @@ const AddCategory = () => {
 
           <div className="flex gap-x-2">
             <input
-              onClick={() => setColor("error")}
+              checked={color === "error"}
+              onChange={() => setColor("error")}
               type="radio"
               name="radio-2"
               className="radio radio-error "
             />
             <input
-              onClick={() => setColor("accent")}
+              checked={color === "accent"}
+              onChange={() => setColor("accent")}
               type="radio"
               name="radio-2"
               className="radio radio-accent"
             />
 
             <input
-              onClick={() => setColor("warning")}
+              checked={color === "warning"}
+              onChange={() => setColor("warning")}
               type="radio"
               name="radio-2"
               className="radio radio-warning "
             />
             <input
-              onClick={() => setColor("success")}
+              checked={color === "success"}
+              onChange={() => setColor("success")}
               type="radio"
               name="radio-2"
               className="radio radio-success"
             />
             <input
-              onClick={() => setColor("info")}
+              checked={color === "info"}
+              onChange={() => setColor("info")}
               type="radio"
               name="radio-2"
               className="radio radio-info"
             />
             <input
-              onClick={() => setColor("primary")}
+              checked={color === "primary"}
+              onChange={() => setColor("primary")}
               type="radio"
               name="radio-2"
               className="radio radio-primary"
             />
             <input
-              onClick={() => setColor("secondary")}
+              checked={color === "secondary"}
+              onChange={() => setColor("secondary")}
               type="radio"
               name="radio-2"
               className="radio radio-secondary"
@@ -80,6 +123,7 @@ const AddCategory = () => {
           Cancel
         </label>
         <label
+          onClick={submitHandler}
           htmlFor="my-modal"
           className="btn btn-primary btn-sm text-primary-content"
         >
@@ -90,4 +134,4 @@ const AddCategory = () => {
   )
 }
 
-export default AddCategory
+export default EditCategory

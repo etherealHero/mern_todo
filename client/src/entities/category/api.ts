@@ -62,7 +62,7 @@ export const useCategoryApi = () => {
   }
 
   const swapCategory = (opt: { _id: string; _id2: string }) => {
-    return fetch(`${API_URL}/task/swap`, {
+    return fetch(`${API_URL}/category/swap`, {
       method: "PUT",
       body: JSON.stringify(opt),
       headers: {

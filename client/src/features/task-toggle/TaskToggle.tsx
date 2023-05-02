@@ -12,6 +12,7 @@ const TaskToggle: FC<{ id: string }> = ({ id }) => {
       title: task.title,
       description: task.description || "",
       category: task.category._id,
+      categoryColor: task.category.color,
       order: task.order,
       checked: !task.checked,
     })

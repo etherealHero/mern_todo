@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useCategoryApi } from "./api"
+import { useAuthContext } from ".."
 
 export interface ICategory {
   _id: string
@@ -26,18 +27,21 @@ export const useCategoryQuery = (id?: string) => {
     swapCategory,
   } = useCategoryApi()
 
+  const { token } = useAuthContext()
+  const queryKey = ["categories", token]
+
   useQuery<ICategory[]>({
-    queryKey: ["categories"],
+    queryKey: queryKey,
     queryFn: getCategories,
   })
 
   const queryClient = useQueryClient()
-  const categories = queryClient.getQueryData<ICategory[]>(["categories"])
+  const categories = queryClient.getQueryData<ICategory[]>(queryKey)
 
   const { mutate: create } = useMutation({
     mutationFn: postCategory,
     onMutate: async (vars) => {
-      await queryClient.cancelQueries(["categories"])
+      await queryClient.cancelQueries(queryKey)
 
       const optimisticCategory: ICategory = {
         _id: "_",
@@ -47,11 +51,9 @@ export const useCategoryQuery = (id?: string) => {
         owner: "_",
       }
 
-      const prevCategories = queryClient.getQueryData<ICategory[]>([
-        "categories",
-      ])
+      const prevCategories = queryClient.getQueryData<ICategory[]>(queryKey)
 
-      queryClient.setQueryData<ICategory[]>(["categories"], (oldCategories) => [
+      queryClient.setQueryData<ICategory[]>(queryKey, (oldCategories) => [
         optimisticCategory,
         ...(oldCategories || []),
       ])
@@ -59,10 +61,10 @@ export const useCategoryQuery = (id?: string) => {
       return { prevCategories }
     },
     onError: (_, __, ctx) => {
-      queryClient.setQueryData(["categories"], ctx?.prevCategories)
+      queryClient.setQueryData(queryKey, ctx?.prevCategories)
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["categories"])
+      queryClient.invalidateQueries(queryKey)
     },
     retry: 3,
   })
@@ -70,11 +72,9 @@ export const useCategoryQuery = (id?: string) => {
   const { mutate: update } = useMutation({
     mutationFn: patchCategory,
     onMutate: async (vars) => {
-      await queryClient.cancelQueries(["categories"])
+      await queryClient.cancelQueries(queryKey)
 
-      const prevCategories = queryClient.getQueryData<ICategory[]>([
-        "categories",
-      ])
+      const prevCategories = queryClient.getQueryData<ICategory[]>(queryKey)
 
       const updatedCategory = prevCategories?.find((c) => c._id === vars._id)
 
@@ -87,7 +87,7 @@ export const useCategoryQuery = (id?: string) => {
       }
 
       queryClient.setQueryData<ICategory[]>(
-        ["categories"],
+        queryKey,
         (oldCategories) =>
           oldCategories?.map((c) =>
             c._id === vars._id ? optimisticCategory : c
@@ -97,7 +97,7 @@ export const useCategoryQuery = (id?: string) => {
       return { prevCategories }
     },
     onError: (_, __, ctx) => {
-      queryClient.setQueryData(["categories"], ctx?.prevCategories)
+      queryClient.setQueryData(queryKey, ctx?.prevCategories)
     },
     retry: 3,
   })
@@ -105,11 +105,9 @@ export const useCategoryQuery = (id?: string) => {
   const { mutate: swap } = useMutation({
     mutationFn: swapCategory,
     onMutate: async (vars) => {
-      await queryClient.cancelQueries(["categories"])
+      await queryClient.cancelQueries(queryKey)
 
-      const prevCategories = queryClient.getQueryData<ICategory[]>([
-        "categories",
-      ])
+      const prevCategories = queryClient.getQueryData<ICategory[]>(queryKey)
 
       const updatedCategory = prevCategories?.find((c) => c._id === vars._id)
       const updatedCategory2 = prevCategories?.find((c) => c._id === vars._id2)
@@ -125,7 +123,7 @@ export const useCategoryQuery = (id?: string) => {
       }
 
       queryClient.setQueryData<ICategory[]>(
-        ["categories"],
+        queryKey,
         (oldCategories) =>
           oldCategories?.map((c) => {
             if (c._id === vars._id) return optimisticCategory2
@@ -137,7 +135,7 @@ export const useCategoryQuery = (id?: string) => {
       return { prevCategories }
     },
     onError: (_, __, ctx) => {
-      queryClient.setQueryData(["categories"], ctx?.prevCategories)
+      queryClient.setQueryData(queryKey, ctx?.prevCategories)
     },
     retry: 3,
   })
@@ -145,21 +143,19 @@ export const useCategoryQuery = (id?: string) => {
   const { mutate: remove } = useMutation({
     mutationFn: removeCategory,
     onMutate: async (id) => {
-      await queryClient.cancelQueries(["categories"])
+      await queryClient.cancelQueries(queryKey)
 
-      const prevCategories = queryClient.getQueryData<ICategory[]>([
-        "categories",
-      ])
+      const prevCategories = queryClient.getQueryData<ICategory[]>(queryKey)
 
       queryClient.setQueryData<ICategory[]>(
-        ["categories"],
+        queryKey,
         (oldCategories) => oldCategories?.filter((c) => c._id !== id) || []
       )
 
       return { prevCategories }
     },
     onError: (_, __, ctx) => {
-      queryClient.setQueryData(["categories"], ctx?.prevCategories)
+      queryClient.setQueryData(queryKey, ctx?.prevCategories)
     },
     retry: 3,
   })
@@ -171,5 +167,6 @@ export const useCategoryQuery = (id?: string) => {
     remove,
     swap,
     create,
+    queryKey,
   }
 }

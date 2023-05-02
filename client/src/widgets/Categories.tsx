@@ -1,5 +1,5 @@
 import { Category, useCategoryQuery } from "../entities"
-import { AddCategory } from "../features"
+import { AddCategory, CategoryController } from "../features"
 import { useModalContext } from "../shared"
 
 const Categories = () => {
@@ -20,10 +20,16 @@ const Categories = () => {
           + Add
         </label>
       </div>
-      <ul className="overflow-scroll flex gap-x-3 mb-3">
-        {categories?.map(({ _id }) => (
-          <Category id={_id} />
-        ))}
+      <ul className="overflow-scroll flex gap-x-3 mb-3 pb-20">
+        {categories?.length ? (
+          categories.map(({ _id }) => (
+            <Category id={_id} key={_id}>
+              <CategoryController id={_id} />
+            </Category>
+          ))
+        ) : (
+          <div className="divider w-full">Empty list</div>
+        )}
       </ul>
     </>
   )

@@ -18,6 +18,7 @@ export const useTaskApi = () => {
   interface newTask {
     title: string
     category: string
+    categoryColor: string
     order: number
     description?: string
   }
@@ -49,6 +50,7 @@ export const useTaskApi = () => {
     description: string
     _id: string
     _id2?: string
+    categoryColor: string
     category: string
     order: number
     checked: boolean

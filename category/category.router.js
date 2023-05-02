@@ -45,7 +45,7 @@ router.get("/", authMiddleware, async (req, res) => {
 
     const categories = await Category.find({ owner: id })
 
-    res.json(categories)
+    res.json(categories.sort((c1, c2) => (c1.order > c2.order ? -1 : 1)))
   } catch (error) {
     res.status(500).json({ message: "Что-то пошло не так" })
     console.log(error)
@@ -107,6 +107,40 @@ router.put(
       }
 
       res.json(category)
+    } catch (error) {
+      res.status(500).json({ message: "Что-то пошло не так" })
+      console.log(error)
+    }
+  }
+)
+
+router.put(
+  "/swap",
+  [authMiddleware, check("_id").exists(), check("_id2").exists()],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req)
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          errors: errors.array(),
+          message: "Некорректные данные для обновления",
+        })
+      }
+
+      const { id } = req.user
+      const { _id, _id2 } = req.body
+
+      const category = await Category.findOne({ _id, owner: id })
+      const category2 = await Category.findOne({ _id: _id2, owner: id })
+      const swapOrder = category.order
+      category.order = category2.order
+      category2.order = swapOrder
+
+      await category.save()
+      await category2.save()
+
+      res.json("swap success")
     } catch (error) {
       res.status(500).json({ message: "Что-то пошло не так" })
       console.log(error)

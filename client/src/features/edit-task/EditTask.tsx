@@ -1,20 +1,25 @@
 import { FC, useEffect, useState } from "react"
-import { useTaskQuery } from "../../entities"
+import { ICategory, useCategoryQuery, useTaskQuery } from "../../entities"
+import { dotVariants } from "./lib"
 
 const EditTask: FC<{ id: string }> = ({ id }) => {
   const { update, task } = useTaskQuery(id)
+  const { categories } = useCategoryQuery()
   const [form, setForm] = useState({ title: "", description: "" })
+  const [category, setCategory] = useState<ICategory>()
 
   useEffect(() => {
     setForm({ title: task.title, description: task.description || "" })
-  }, [task])
+    setCategory(categories?.find((c) => c._id === task.category._id))
+  }, [task, categories])
 
   const submitHandler = () => {
     update({
       _id: task._id,
       ...form,
       checked: task.checked,
-      category: task.category._id,
+      category: (category as ICategory)._id,
+      categoryColor: (category as ICategory).color,
       order: task.order,
     })
     setForm({ title: "", description: "" })
@@ -47,39 +52,24 @@ const EditTask: FC<{ id: string }> = ({ id }) => {
       </div>
 
       <div className="modal-action flex justify-between">
-        <div className="dropdown dropdown-right dropdown-end">
+        <div className="dropdown dropdown-top ">
           <label tabIndex={0} className="btn btn-sm">
-            <div className="bg-accent w-3 h-3 rounded-full mr-2" />
-            Business
+            <div
+              className={`${
+                dotVariants[category?.color || "accent"]
+              } w-3 h-3 rounded-full mr-2`}
+            />
+            {category?.title}
           </label>
           <ul
             tabIndex={0}
             className="dropdown-content menu menu-compact flex-nowrap overflow-scroll bg-base-300 h-44 p-2 shadow rounded-box w-40"
           >
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Item 2</a>
-            </li>
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Item 2</a>
-            </li>
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Item 2</a>
-            </li>
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Item 2</a>
-            </li>
+            {categories?.map((c) => (
+              <li key={c._id} onClick={() => setCategory(c)}>
+                <a>{c.title}</a>
+              </li>
+            ))}
           </ul>
         </div>
         <div>

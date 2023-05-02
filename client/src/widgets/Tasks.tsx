@@ -21,23 +21,28 @@ const Tasks = () => {
 
   return (
     <>
-      <div className="mt-0 flex items-end gap-x-3 mb-4">
+      <div className="-mt-20 flex items-end gap-x-3 mb-4">
         <h2>Tasks</h2>
         <label
-          htmlFor="my-modal"
-          className="btn btn-sm btn-primary"
+          htmlFor={`${categories?.length && "my-modal"}`}
+          className={`btn btn-sm
+            ${categories?.length && " btn-primary"}`}
           onClick={modalHandler}
         >
           + Add
         </label>
       </div>
       <ul ref={ref} className="overflow-scroll ">
-        {tasks?.map(({ _id }) => (
-          <Task id={_id} key={_id}>
-            <TaskController id={_id} />
-            <TaskToggle id={_id} />
-          </Task>
-        ))}
+        {tasks?.length ? (
+          tasks.map(({ _id }) => (
+            <Task id={_id} key={_id}>
+              <TaskController id={_id} />
+              <TaskToggle id={_id} />
+            </Task>
+          ))
+        ) : (
+          <div className="divider w-full">Empty list</div>
+        )}
       </ul>
     </>
   )

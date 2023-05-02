@@ -18,7 +18,6 @@ const Category: FC<ITaskProps> = ({ id, children }) => {
     <>
       <li className="card card-compact shrink-0 w-56 bg-base-300/50">
         {children}
-        {/* <CardController position="right-start" direction="row" /> */}
         <div className="card-body">
           {tasksByCategory.length} tasks
           <h1 className="card-title">{category.title}</h1>
