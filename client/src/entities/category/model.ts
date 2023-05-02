@@ -63,9 +63,9 @@ export const useCategoryQuery = (id?: string) => {
     onError: (_, __, ctx) => {
       queryClient.setQueryData(queryKey, ctx?.prevCategories)
     },
-//    onSettled: () => {
-//         queryClient.invalidateQueries(queryKey)
-//    },
+    onSettled: () => {
+      queryClient.invalidateQueries(queryKey)
+    },
     retry: 3,
   })
 
