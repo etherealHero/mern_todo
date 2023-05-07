@@ -11,6 +11,14 @@ const useTheme = () => {
   useEffect(() => {
     setThemeHandle(localStorage.getItem(THEME_KEY) || "dark")
     setReady(true)
+
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", "red")
+
+    document
+      .querySelector('meta[name="msapplication-TileColor"]')
+      ?.setAttribute("content", "red")
   }, [setTheme])
 
   const setThemeHandle = useCallback(

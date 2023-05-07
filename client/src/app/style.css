@@ -22,7 +22,7 @@
 
   html,
   body {
-    @apply h-full overflow-hidden backdrop-brightness-125;
+    @apply h-full overflow-hidden bg-base-100 backdrop-brightness-125;
   }
 
   h1 {
