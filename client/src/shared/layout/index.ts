@@ -1,4 +1,4 @@
-import Layout from "./Layout"
-import { useModalContext } from "./ModalContext"
+import Layout, { useCategoryContext } from "./Layout"
+import { useModalContext } from "./Modal"
 
-export { Layout, useModalContext }
+export { Layout, useModalContext, useCategoryContext }

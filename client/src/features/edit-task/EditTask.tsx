@@ -53,7 +53,7 @@ const EditTask: FC<{ id: string }> = ({ id }) => {
 
       <div className="modal-action flex justify-between">
         <div className="dropdown dropdown-top ">
-          <label tabIndex={0} className="btn btn-sm">
+          <label tabIndex={0} className="btn btn-sm normal-case">
             <div
               className={`${
                 dotVariants[category?.color || "accent"]

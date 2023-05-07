@@ -55,7 +55,7 @@ const AddTask = () => {
 
       <div className="modal-action flex justify-between">
         <div className="dropdown dropdown-right dropdown-end">
-          <label tabIndex={0} className="btn btn-sm">
+          <label tabIndex={0} className="btn btn-sm normal-case">
             <div
               className={`${
                 dotVariants[category?.color || "accent"]

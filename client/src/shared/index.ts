@@ -1,7 +1,7 @@
 import Icon from "./Icon"
 import Loader from "./Loader"
 import { API_URL } from "./api"
-import { Layout, useModalContext } from "./layout"
+import { Layout, useModalContext, useCategoryContext } from "./layout"
 import { useOutside } from "./useOutside"
 import { useWindowSize } from "./useWindowSize"
 
@@ -13,4 +13,5 @@ export {
   useOutside,
   Icon,
   useWindowSize,
+  useCategoryContext,
 }

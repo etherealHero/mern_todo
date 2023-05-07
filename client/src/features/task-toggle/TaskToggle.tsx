@@ -21,7 +21,7 @@ const TaskToggle: FC<{ id: string }> = ({ id }) => {
   return (
     <input
       type="checkbox"
-      className={`checkbox rounded-full ${
+      className={`checkbox rounded-full border-[1px] ${
         checkboxVariants[task.category.color]
       }`}
       checked={task.checked}

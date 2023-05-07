@@ -51,7 +51,7 @@ export const useTaskQuery = (id?: string) => {
 
       const optimisticTask: ITask = {
         _id: "_",
-        title: vars.title,
+        title: vars.title.trim(),
         owner: "_",
         category: {
           _id: vars.category,
@@ -59,7 +59,7 @@ export const useTaskQuery = (id?: string) => {
         },
         order: vars.order,
         checked: false,
-        description: vars.description,
+        description: vars.description?.trim(),
       }
 
       const prevTasks = queryClient.getQueryData<ITask[]>(queryKey)
@@ -92,8 +92,8 @@ export const useTaskQuery = (id?: string) => {
       const optimisticTask: ITask = {
         ...(updatedTask as ITask),
         _id: vars._id,
-        title: vars.title,
-        description: vars.description,
+        title: vars.title.trim(),
+        description: vars.description.trim(),
         category: {
           _id: vars.category,
           color: vars.categoryColor,
@@ -105,7 +105,9 @@ export const useTaskQuery = (id?: string) => {
       queryClient.setQueryData<ITask[]>(
         queryKey,
         (oldTasks) =>
-          oldTasks?.map((t) => (t._id === vars._id ? optimisticTask : t)) || []
+          oldTasks
+            ?.map((t) => (t._id === vars._id ? optimisticTask : t))
+            .sort((t1, t2) => (t1.order > t2.order ? -1 : 1)) || []
       )
 
       return { prevTasks }

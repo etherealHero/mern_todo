@@ -1,5 +1,5 @@
 import { FC, MouseEventHandler } from "react"
-import { Icon } from "../../shared"
+import { Icon, useCategoryContext } from "../../shared"
 import { ITask, useCategoryQuery, useTaskQuery } from "../../entities"
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -7,6 +7,7 @@ const Remove: FC<{ id: string }> = ({ id }) => {
   const { remove } = useCategoryQuery(id)
   const { remove: removeTask, queryKey } = useTaskQuery()
   const queryClient = useQueryClient()
+  const { pinCategory, setPinCategory } = useCategoryContext()
 
   const removeHandler: MouseEventHandler<HTMLAnchorElement> = () => {
     queryClient.setQueryData<ITask[]>(queryKey, (tasks) =>
@@ -18,6 +19,8 @@ const Remove: FC<{ id: string }> = ({ id }) => {
         return true
       })
     )
+
+    if (pinCategory === id) setPinCategory(null)
 
     remove(id)
   }

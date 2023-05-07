@@ -45,7 +45,7 @@ export const useCategoryQuery = (id?: string) => {
 
       const optimisticCategory: ICategory = {
         _id: "_",
-        title: vars.title,
+        title: vars.title.trim(),
         color: vars.color,
         order: vars.order,
         owner: "_",
@@ -81,7 +81,7 @@ export const useCategoryQuery = (id?: string) => {
       const optimisticCategory: ICategory = {
         ...(updatedCategory as ICategory),
         _id: vars._id,
-        title: vars.title,
+        title: vars.title.trim(),
         color: vars.color,
         order: vars.order,
       }
