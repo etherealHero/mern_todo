@@ -39,24 +39,22 @@ const Tasks = () => {
           + Add
         </label>
       </div>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <ul ref={ref} className="overflow-scroll ">
-          {tasks?.filter((t) =>
+      <ul ref={ref} className="overflow-scroll ">
+        {isLoading ? (
+          <Loader />
+        ) : tasks?.filter((t) =>
             pinCategory ? t.category._id === pinCategory : t
           )?.length ? (
-            tasks.map(({ _id }) => (
-              <Task id={_id} key={_id}>
-                <TaskController id={_id} />
-                <TaskToggle id={_id} />
-              </Task>
-            ))
-          ) : (
-            <div className="divider w-full">Empty list</div>
-          )}
-        </ul>
-      )}
+          tasks.map(({ _id }) => (
+            <Task id={_id} key={_id}>
+              <TaskController id={_id} />
+              <TaskToggle id={_id} />
+            </Task>
+          ))
+        ) : (
+          <div className="divider w-full">Empty list</div>
+        )}
+      </ul>
     </>
   )
 }
