@@ -10,18 +10,8 @@ const useTheme = () => {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    const theme = localStorage.getItem(THEME_KEY) || "dark"
-
-    setThemeHandle(theme)
+    setThemeHandle(localStorage.getItem(THEME_KEY) || "dark")
     setReady(true)
-
-    document
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", statusBarColor[theme])
-
-    document
-      .querySelector('meta[name="msapplication-TileColor"]')
-      ?.setAttribute("content", statusBarColor[theme])
   }, [setTheme])
 
   const setThemeHandle = useCallback(
@@ -32,6 +22,14 @@ const useTheme = () => {
       const isDark = !!~config.themes.findIndex(
         (t) => t[0] === theme && t[1] === "dark"
       )
+
+      document
+        .querySelector('meta[name="theme-color"]')
+        ?.setAttribute("content", statusBarColor[theme])
+
+      document
+        .querySelector('meta[name="msapplication-TileColor"]')
+        ?.setAttribute("content", statusBarColor[theme])
 
       setThemeIsDark(isDark)
       setTheme(theme)
