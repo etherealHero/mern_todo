@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { config } from "./config"
+import { statusBarColor } from "./ui"
 
 const THEME_KEY = "color-theme"
 
@@ -9,16 +10,18 @@ const useTheme = () => {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    setThemeHandle(localStorage.getItem(THEME_KEY) || "dark")
+    const theme = localStorage.getItem(THEME_KEY) || "dark"
+
+    setThemeHandle(theme)
     setReady(true)
 
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", "red")
+      ?.setAttribute("content", statusBarColor[theme])
 
     document
       .querySelector('meta[name="msapplication-TileColor"]')
-      ?.setAttribute("content", "red")
+      ?.setAttribute("content", statusBarColor[theme])
   }, [setTheme])
 
   const setThemeHandle = useCallback(
