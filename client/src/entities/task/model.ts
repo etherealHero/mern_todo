@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useTaskApi } from "./api"
 import { useAuthContext } from ".."
-import { useCallback, useMemo } from "react"
 
 export interface ITask {
   _id: string

@@ -30,7 +30,7 @@ export const useCategoryQuery = (id?: string) => {
   const { token } = useAuthContext()
   const queryKey = ["categories", token]
 
-  const { isLoading, isFetchedAfterMount } = useQuery<ICategory[]>({
+  const { isLoading } = useQuery<ICategory[]>({
     queryKey: queryKey,
     queryFn: getCategories,
   })
@@ -168,6 +168,6 @@ export const useCategoryQuery = (id?: string) => {
     swap,
     create,
     queryKey,
-    isLoading: isLoading,
+    isLoading,
   }
 }
