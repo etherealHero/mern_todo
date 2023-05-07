@@ -2,8 +2,8 @@ import { FC, useMemo } from "react"
 import { Icon, useCategoryContext } from "../../shared"
 import { ITask, useTaskQuery } from "../../entities"
 
-const Move: FC<{ id: string }> = ({ id }) => {
-  const { task: current, tasks, swap, update } = useTaskQuery(id)
+const Move: FC<{ id: string; swap: any }> = ({ id, swap }) => {
+  const { task: current, tasks, swap: _, update } = useTaskQuery(id)
   const { pinCategory } = useCategoryContext()
 
   const currentIdx = (tasks || [])?.findIndex((t) => t._id === current._id)

@@ -22,7 +22,7 @@ const Tasks = () => {
   const { setModalChild } = useModalContext()
   const modalHandler = () => setModalChild(<AddTask />)
 
-  const { tasks, isLoading } = useTaskQuery()
+  const { tasks, isLoading, swap } = useTaskQuery()
 
   const { pinCategory } = useCategoryContext()
 
@@ -47,7 +47,7 @@ const Tasks = () => {
           )?.length ? (
           tasks.map(({ _id }) => (
             <Task id={_id} key={_id}>
-              <TaskController id={_id} />
+              <TaskController id={_id} swap={swap} />
               <TaskToggle id={_id} />
             </Task>
           ))

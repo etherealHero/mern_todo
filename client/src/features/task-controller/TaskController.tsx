@@ -4,7 +4,7 @@ import Remove from "./Remove"
 import { EditTask } from ".."
 import Move from "./Move"
 
-const TaskController: FC<{ id: string }> = ({ id }) => {
+const TaskController: FC<{ id: string; swap: any }> = ({ id, swap }) => {
   const { isShow, setIsShow, ref, toggler } = useOutside(false)
   const [isMove, setIsMove] = useState<boolean>(false)
 
@@ -39,7 +39,7 @@ const TaskController: FC<{ id: string }> = ({ id }) => {
               Переместить
             </a>
           </li>
-          {isMove && <Move id={id} />}
+          {isMove && <Move id={id} swap={swap} />}
           <li>
             <label onClick={modalHandler} htmlFor="my-modal" className="px-2">
               <Icon type="edit" />
