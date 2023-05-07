@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+
 import { Dashboard, Login, Registraion } from "../pages"
 import { Drawer, Navbar } from "../widgets"
 import { AuthProvider, ThemeProvider } from "../entities"
@@ -21,6 +23,7 @@ function App() {
               </Routes>
             </Layout>
           </BrowserRouter>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
     </AuthProvider>

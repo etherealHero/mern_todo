@@ -1,9 +1,9 @@
 import { Category, useCategoryQuery } from "../entities"
 import { AddCategory, CategoryController } from "../features"
-import { Icon, useCategoryContext, useModalContext } from "../shared"
+import { Icon, Loader, useCategoryContext, useModalContext } from "../shared"
 
 const Categories = () => {
-  const { categories } = useCategoryQuery()
+  const { categories, isLoading } = useCategoryQuery()
   const { setModalChild } = useModalContext()
   const { pinCategory, setPinCategory } = useCategoryContext()
 
@@ -32,17 +32,23 @@ const Categories = () => {
           </button>
         )}
       </div>
-      <ul className="overflow-scroll flex gap-x-3 mb-3 pb-20 -mx-3 px-3">
-        {categories?.length ? (
-          categories.map(({ _id }) => (
-            <Category id={_id} key={_id}>
-              <CategoryController id={_id} />
-            </Category>
-          ))
-        ) : (
-          <div className="divider w-full">Empty list</div>
-        )}
-      </ul>
+      {isLoading ? (
+        <div className="pb-20">
+          <Loader />
+        </div>
+      ) : (
+        <ul className="overflow-scroll flex gap-x-3 mb-3 pb-20 -mx-3 px-3">
+          {categories?.length ? (
+            categories?.map(({ _id }) => (
+              <Category id={_id} key={_id}>
+                <CategoryController id={_id} />
+              </Category>
+            ))
+          ) : (
+            <div className="divider w-full">Empty list</div>
+          )}
+        </ul>
+      )}
     </>
   )
 }

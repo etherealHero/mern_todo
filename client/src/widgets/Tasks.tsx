@@ -1,7 +1,12 @@
 import { useEffect, useRef } from "react"
 import { AddTask, TaskController, TaskToggle } from "../features"
 import { Task, useTaskQuery, useCategoryQuery } from "../entities"
-import { useModalContext, useWindowSize } from "../shared"
+import {
+  Loader,
+  useCategoryContext,
+  useModalContext,
+  useWindowSize,
+} from "../shared"
 
 const Tasks = () => {
   const ref = useRef<HTMLUListElement>(null)
@@ -17,7 +22,9 @@ const Tasks = () => {
   const { setModalChild } = useModalContext()
   const modalHandler = () => setModalChild(<AddTask />)
 
-  const { tasks } = useTaskQuery()
+  const { tasks, isLoading } = useTaskQuery()
+
+  const { pinCategory } = useCategoryContext()
 
   return (
     <>
@@ -32,18 +39,24 @@ const Tasks = () => {
           + Add
         </label>
       </div>
-      <ul ref={ref} className="overflow-scroll ">
-        {tasks?.length ? (
-          tasks.map(({ _id }) => (
-            <Task id={_id} key={_id}>
-              <TaskController id={_id} />
-              <TaskToggle id={_id} />
-            </Task>
-          ))
-        ) : (
-          <div className="divider w-full">Empty list</div>
-        )}
-      </ul>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <ul ref={ref} className="overflow-scroll ">
+          {tasks?.filter((t) =>
+            pinCategory ? t.category._id === pinCategory : t
+          )?.length ? (
+            tasks.map(({ _id }) => (
+              <Task id={_id} key={_id}>
+                <TaskController id={_id} />
+                <TaskToggle id={_id} />
+              </Task>
+            ))
+          ) : (
+            <div className="divider w-full">Empty list</div>
+          )}
+        </ul>
+      )}
     </>
   )
 }

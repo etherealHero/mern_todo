@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useTaskApi } from "./api"
 import { useAuthContext } from ".."
+import { useCallback, useMemo } from "react"
 
 export interface ITask {
   _id: string
@@ -36,7 +37,7 @@ export const useTaskQuery = (id?: string) => {
   const { token } = useAuthContext()
   const queryKey = ["tasks", token]
 
-  useQuery<ITask[]>({
+  const { isLoading } = useQuery<ITask[]>({
     queryKey,
     queryFn: getTasks,
   })
@@ -184,5 +185,6 @@ export const useTaskQuery = (id?: string) => {
     swap,
     create,
     queryKey,
+    isLoading,
   }
 }

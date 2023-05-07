@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^4.29.5",
+    "@tanstack/react-query-devtools": "^4.29.6",
     "daisyui": "^2.51.6",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
