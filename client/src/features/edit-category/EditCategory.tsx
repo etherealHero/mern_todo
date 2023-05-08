@@ -1,13 +1,14 @@
 import { FC, useEffect, useState } from "react"
-import { ITask, useCategoryQuery, useTaskQuery } from "../../entities"
-import { useQueryClient } from "@tanstack/react-query"
+import { useCategoryQuery } from "../../entities"
 
-const EditCategory: FC<{ id: string }> = ({ id }) => {
+const EditCategory: FC<{ id: string; update: any; updateColor: any }> = ({
+  id,
+  update,
+  updateColor,
+}) => {
   const [title, setTitle] = useState<string>("")
   const [color, setColor] = useState<string>("")
-  const { category, update } = useCategoryQuery(id)
-  const { queryKey } = useTaskQuery()
-  const queryClient = useQueryClient()
+  const { category } = useCategoryQuery(id)
 
   useEffect(() => {
     setTitle(category.title)
@@ -22,20 +23,7 @@ const EditCategory: FC<{ id: string }> = ({ id }) => {
       order: category.order,
     })
 
-    queryClient.setQueryData<ITask[]>(queryKey, (tasks) =>
-      (tasks || []).map((t) => {
-        if (t.category._id === category._id)
-          return {
-            ...t,
-            category: {
-              _id: category._id,
-              color,
-            },
-          }
-
-        return t
-      })
-    )
+    updateColor(category._id, color)
 
     setTitle("")
   }

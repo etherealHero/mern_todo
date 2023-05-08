@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { useCategoryQuery } from "../../entities"
 
-const AddCategory = () => {
+const AddCategory = ({ create }: { create: any }) => {
   const [title, setTitle] = useState<string>("")
   const [color, setColor] = useState<string>("error")
-  const { categories, create } = useCategoryQuery()
+  const { categories } = useCategoryQuery()
 
   const submitHandler = () => {
     const arr: number[] = [0]

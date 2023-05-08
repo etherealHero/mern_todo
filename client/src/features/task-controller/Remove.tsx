@@ -1,10 +1,8 @@
 import { FC, MouseEventHandler } from "react"
+
 import { Icon } from "../../shared"
-import { useTaskQuery } from "../../entities"
 
-const Remove: FC<{ id: string }> = ({ id }) => {
-  const { remove } = useTaskQuery(id)
-
+const Remove: FC<{ id: string; remove: any }> = ({ id, remove }) => {
   const removeHandler: MouseEventHandler<HTMLAnchorElement> = () => {
     remove(id)
   }

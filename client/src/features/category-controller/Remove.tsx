@@ -1,28 +1,22 @@
 import { FC, MouseEventHandler } from "react"
 import { Icon, useCategoryContext } from "../../shared"
-import { ITask, useCategoryQuery, useTaskQuery } from "../../entities"
-import { useQueryClient } from "@tanstack/react-query"
 
-const Remove: FC<{ id: string }> = ({ id }) => {
-  const { remove } = useCategoryQuery(id)
-  const { remove: removeTask, queryKey } = useTaskQuery()
-  const queryClient = useQueryClient()
+type Props = {
+  id: string
+  mutate: {
+    remove: any
+    removeTasks: any
+  }
+}
+
+const Remove: FC<Props> = ({ id, mutate }) => {
   const { pinCategory, setPinCategory } = useCategoryContext()
 
   const removeHandler: MouseEventHandler<HTMLAnchorElement> = () => {
-    queryClient.setQueryData<ITask[]>(queryKey, (tasks) =>
-      (tasks || []).filter((t) => {
-        if (t.category._id === id) {
-          removeTask(t._id)
-          return false
-        }
-        return true
-      })
-    )
-
     if (pinCategory === id) setPinCategory(null)
 
-    remove(id)
+    mutate.removeTasks(id)
+    mutate.remove(id)
   }
 
   return (

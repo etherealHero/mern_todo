@@ -4,13 +4,31 @@ import Remove from "./Remove"
 import { EditCategory } from ".."
 import Move from "./Move"
 
-const CategoryController: FC<{ id: string }> = ({ id }) => {
+type Props = {
+  id: string
+  mutate: {
+    swap: any
+    update: any
+    updateColor: any
+    remove: any
+    removeTasksByCategory: any
+  }
+}
+
+const CategoryController: FC<Props> = ({ id, mutate }) => {
   const { isShow, setIsShow, ref, toggler } = useOutside(false)
   const [isMove, setIsMove] = useState<boolean>(false)
 
   const { setModalChild } = useModalContext()
 
-  const modalHandler = () => setModalChild(<EditCategory id={id} />)
+  const modalHandler = () =>
+    setModalChild(
+      <EditCategory
+        id={id}
+        update={mutate.update}
+        updateColor={mutate.updateColor}
+      />
+    )
 
   useEffect(() => setIsMove(false), [isShow])
 
@@ -39,14 +57,20 @@ const CategoryController: FC<{ id: string }> = ({ id }) => {
               Переместить
             </a>
           </li>
-          {isMove && <Move id={id} />}
+          {isMove && <Move id={id} swap={mutate.swap} />}
           <li>
             <label onClick={modalHandler} htmlFor="my-modal" className="px-2">
               <Icon type="edit" />
               Изменить
             </label>
           </li>
-          <Remove id={id} />
+          <Remove
+            id={id}
+            mutate={{
+              remove: mutate.remove,
+              removeTasks: mutate.removeTasksByCategory,
+            }}
+          />
         </ul>
       )}
     </div>

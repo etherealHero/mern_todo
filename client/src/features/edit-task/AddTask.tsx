@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 import { ICategory, useCategoryQuery, useTaskQuery } from "../../entities"
 import { dotVariants } from "./lib"
 
-const AddTask = () => {
+const AddTask = ({ create }: { create: any }) => {
   const [form, setForm] = useState({ title: "", description: "" })
-  const { tasks, create } = useTaskQuery()
+  const { tasks } = useTaskQuery()
   const { categories } = useCategoryQuery()
   const [category, setCategory] = useState<ICategory>()
 

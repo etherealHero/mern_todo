@@ -2,8 +2,8 @@ import { FC } from "react"
 import { Icon } from "../../shared"
 import { useCategoryQuery } from "../../entities"
 
-const Move: FC<{ id: string }> = ({ id }) => {
-  const { category: current, categories, swap } = useCategoryQuery(id)
+const Move: FC<{ id: string; swap: any }> = ({ id, swap }) => {
+  const { category: current, categories } = useCategoryQuery(id)
 
   const currentIdx = (categories || [])?.findIndex((c) => c._id === current._id)
 

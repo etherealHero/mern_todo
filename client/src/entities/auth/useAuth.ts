@@ -2,9 +2,9 @@ import { useState, useCallback, useEffect } from "react"
 
 const storageName = "userData"
 
+const init = JSON.parse(localStorage.getItem(storageName) || "{}").token || null
+
 export const useAuth = () => {
-  const init =
-    JSON.parse(localStorage.getItem(storageName) || "{}").token || null
   const [token, setToken] = useState<string | null>(init)
   const [ready, setReady] = useState(false)
 

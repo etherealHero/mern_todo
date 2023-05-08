@@ -1,13 +1,22 @@
+import { FC } from "react"
 import { Category, useCategoryQuery } from "../entities"
 import { AddCategory, CategoryController } from "../features"
 import { Icon, Loader, useCategoryContext, useModalContext } from "../shared"
 
-const Categories = () => {
-  const { categories, isLoading } = useCategoryQuery()
-  const { setModalChild } = useModalContext()
+type Props = {
+  mutate: {
+    updateCategoryColor: any
+    removeTasksByCategory: any
+  }
+}
+
+const Categories: FC<Props> = ({ mutate }) => {
+  const { categories, isLoading, create, swap, update, remove } =
+    useCategoryQuery()
   const { pinCategory, setPinCategory } = useCategoryContext()
 
-  const modalHandler = () => setModalChild(<AddCategory />)
+  const { setModalChild } = useModalContext()
+  const modalHandler = () => setModalChild(<AddCategory create={create} />)
 
   return (
     <>
@@ -41,7 +50,16 @@ const Categories = () => {
           {categories?.length ? (
             categories?.map(({ _id }) => (
               <Category id={_id} key={_id}>
-                <CategoryController id={_id} />
+                <CategoryController
+                  id={_id}
+                  mutate={{
+                    swap,
+                    update,
+                    updateColor: mutate.updateCategoryColor,
+                    removeTasksByCategory: mutate.removeTasksByCategory,
+                    remove,
+                  }}
+                />
               </Category>
             ))
           ) : (

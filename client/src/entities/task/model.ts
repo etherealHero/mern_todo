@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useTaskApi } from "./api"
 import { useAuthContext } from ".."
-import { copyObject } from "../../shared"
 
 export interface ITask {
   _id: string
@@ -166,10 +165,10 @@ export const useTaskQuery = (id?: string) => {
 
       const prevTasks = queryClient.getQueryData<ITask[]>(queryKey)
 
-      queryClient.setQueryData<ITask[]>(queryKey, (oldTasks) => {
-        const newTasks: ITask[] = copyObject(oldTasks)
-        return newTasks?.filter((t) => t._id !== id) || []
-      })
+      queryClient.setQueryData<ITask[]>(
+        queryKey,
+        (oldTasks) => oldTasks?.filter((t) => t._id !== id) || []
+      )
 
       return { prevTasks }
     },
