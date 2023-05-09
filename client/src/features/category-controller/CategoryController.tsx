@@ -6,29 +6,14 @@ import Move from "./Move"
 
 type Props = {
   id: string
-  mutate: {
-    swap: any
-    update: any
-    updateColor: any
-    remove: any
-    removeTasksByCategory: any
-  }
 }
 
-const CategoryController: FC<Props> = ({ id, mutate }) => {
+const CategoryController: FC<Props> = ({ id }) => {
   const { isShow, setIsShow, ref, toggler } = useOutside(false)
   const [isMove, setIsMove] = useState<boolean>(false)
 
   const { setModalChild } = useModalContext()
-
-  const modalHandler = () =>
-    setModalChild(
-      <EditCategory
-        id={id}
-        update={mutate.update}
-        updateColor={mutate.updateColor}
-      />
-    )
+  const modalHandler = () => setModalChild(<EditCategory id={id} />)
 
   useEffect(() => setIsMove(false), [isShow])
 
@@ -57,20 +42,14 @@ const CategoryController: FC<Props> = ({ id, mutate }) => {
               Переместить
             </a>
           </li>
-          {isMove && <Move id={id} swap={mutate.swap} />}
+          {isMove && <Move id={id} />}
           <li>
             <label onClick={modalHandler} htmlFor="my-modal" className="px-2">
               <Icon type="edit" />
               Изменить
             </label>
           </li>
-          <Remove
-            id={id}
-            mutate={{
-              remove: mutate.remove,
-              removeTasks: mutate.removeTasksByCategory,
-            }}
-          />
+          <Remove id={id} />
         </ul>
       )}
     </div>

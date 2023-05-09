@@ -1,22 +1,22 @@
-import { FC, MouseEventHandler } from "react"
+import { FC, MouseEventHandler, useContext } from "react"
 import { Icon, useCategoryContext } from "../../shared"
+import { ModelsContext } from "../../pages/Dashboard"
 
 type Props = {
   id: string
-  mutate: {
-    remove: any
-    removeTasks: any
-  }
 }
 
-const Remove: FC<Props> = ({ id, mutate }) => {
+const Remove: FC<Props> = ({ id }) => {
   const { pinCategory, setPinCategory } = useCategoryContext()
+
+  const models = useContext(ModelsContext)
+  if (!models) return <></>
 
   const removeHandler: MouseEventHandler<HTMLAnchorElement> = () => {
     if (pinCategory === id) setPinCategory(null)
 
-    mutate.removeTasks(id)
-    mutate.remove(id)
+    // mutate.removeTasks(id)
+    models.category.remove(id)
   }
 
   return (

@@ -1,22 +1,22 @@
-import { FC } from "react"
-import { Category, useCategoryQuery } from "../entities"
+import { FC, useContext } from "react"
+import { Category } from "../entities"
 import { AddCategory, CategoryController } from "../features"
 import { Icon, Loader, useCategoryContext, useModalContext } from "../shared"
+import { ModelsContext } from "../pages/Dashboard"
 
-type Props = {
-  mutate: {
-    updateCategoryColor: any
-    removeTasksByCategory: any
-  }
-}
+type Props = {}
 
-const Categories: FC<Props> = ({ mutate }) => {
-  const { categories, isLoading, create, swap, update, remove } =
-    useCategoryQuery()
+const Categories: FC<Props> = () => {
+  const models = useContext(ModelsContext)
+  if (!models) return <></>
+
   const { pinCategory, setPinCategory } = useCategoryContext()
 
   const { setModalChild } = useModalContext()
-  const modalHandler = () => setModalChild(<AddCategory create={create} />)
+  const modalHandler = () =>
+    setModalChild(<AddCategory create={models.category.create} />)
+
+  // model
 
   return (
     <>
@@ -41,25 +41,17 @@ const Categories: FC<Props> = ({ mutate }) => {
           </button>
         )}
       </div>
-      {isLoading ? (
+      {/* {isLoading ? ( */}
+      {models.category.isLoading ? (
         <div className="pb-20">
           <Loader />
         </div>
       ) : (
         <ul className="overflow-scroll flex gap-x-3 mb-3 pb-20 -mx-3 px-3">
-          {categories?.length ? (
-            categories?.map(({ _id }) => (
+          {models.category.categories?.length ? (
+            models.category.categories?.map(({ _id }) => (
               <Category id={_id} key={_id}>
-                <CategoryController
-                  id={_id}
-                  mutate={{
-                    swap,
-                    update,
-                    updateColor: mutate.updateCategoryColor,
-                    removeTasksByCategory: mutate.removeTasksByCategory,
-                    remove,
-                  }}
-                />
+                <CategoryController id={_id} />
               </Category>
             ))
           ) : (

@@ -1,22 +1,29 @@
-import { FC } from "react"
+import { FC, useContext } from "react"
 import { Icon } from "../../shared"
-import { useCategoryQuery } from "../../entities"
+import { ModelsContext } from "../../pages/Dashboard"
 
-const Move: FC<{ id: string; swap: any }> = ({ id, swap }) => {
-  const { category: current, categories } = useCategoryQuery(id)
+const Move: FC<{ id: string }> = ({ id }) => {
+  const models = useContext(ModelsContext)
+  if (!models) return <></>
 
-  const currentIdx = (categories || [])?.findIndex((c) => c._id === current._id)
+  const current = models.category.categories?.find((c) => c._id === id)
+
+  if (!current) return <></>
+
+  const currentIdx = (models.category.categories || [])?.findIndex(
+    (c) => c._id === current._id
+  )
 
   const nextSwapHandler = () => {
-    const next = (categories || [])[currentIdx + 1]
+    const next = (models.category.categories || [])[currentIdx + 1]
     if (!next) return
-    swap({ _id: current._id, _id2: next._id })
+    models.category.swap({ _id: current._id, _id2: next._id })
   }
 
   const prevSwapHandler = () => {
-    const prev = (categories || [])[currentIdx - 1]
+    const prev = (models.category.categories || [])[currentIdx - 1]
     if (!prev) return
-    swap({ _id: current._id, _id2: prev._id })
+    models.category.swap({ _id: current._id, _id2: prev._id })
   }
 
   return (
