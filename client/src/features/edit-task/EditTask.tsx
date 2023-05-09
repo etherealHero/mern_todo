@@ -1,26 +1,36 @@
-import { FC, useEffect, useState } from "react"
-import { ICategory, useCategoryQuery, useTaskQuery } from "../../entities"
+import { FC, useContext, useEffect, useState } from "react"
+import { ICategory } from "../../entities"
 import { dotVariants } from "./lib"
+import { ModelsContext } from "../../pages/Dashboard"
 
-const EditTask: FC<{ id: string; update: any }> = ({ id, update }) => {
-  const { task } = useTaskQuery(id)
-  const { categories } = useCategoryQuery()
+const EditTask: FC<{ id: string }> = ({ id }) => {
+  const models = useContext(ModelsContext)
+  const currentTask = models.task?.tasks?.find((t) => t._id === id)
+  if (!currentTask) return <></>
+
   const [form, setForm] = useState({ title: "", description: "" })
   const [category, setCategory] = useState<ICategory>()
 
   useEffect(() => {
-    setForm({ title: task.title, description: task.description || "" })
-    setCategory(categories?.find((c) => c._id === task.category._id))
-  }, [task, categories])
+    setForm({
+      title: currentTask.title,
+      description: currentTask.description || "",
+    })
+    setCategory(
+      models.category.categories?.find(
+        (c) => c._id === currentTask.category._id
+      )
+    )
+  }, [currentTask, models.category.categories])
 
   const submitHandler = () => {
-    update({
-      _id: task._id,
+    models.task.update({
+      _id: currentTask._id,
       ...form,
-      checked: task.checked,
+      checked: currentTask.checked,
       category: (category as ICategory)._id,
       categoryColor: (category as ICategory).color,
-      order: task.order,
+      order: currentTask.order,
     })
     setForm({ title: "", description: "" })
   }
@@ -65,7 +75,7 @@ const EditTask: FC<{ id: string; update: any }> = ({ id, update }) => {
             tabIndex={0}
             className="dropdown-content menu menu-compact flex-nowrap overflow-scroll bg-base-300 h-44 p-2 shadow rounded-box w-40"
           >
-            {categories?.map((c) => (
+            {models.category.categories?.map((c) => (
               <li key={c._id} onClick={() => setCategory(c)}>
                 <a>{c.title}</a>
               </li>

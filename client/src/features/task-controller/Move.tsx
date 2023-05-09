@@ -1,79 +1,84 @@
-import { FC, useMemo } from "react"
+import { FC, useContext, useMemo } from "react"
 import { Icon, useCategoryContext } from "../../shared"
-import { ITask, useTaskQuery } from "../../entities"
+import { ITask } from "../../entities"
+import { ModelsContext } from "../../pages/Dashboard"
 
-const Move: FC<{ id: string; swap: any; update: any }> = ({
-  id,
-  swap,
-  update,
-}) => {
-  const { task: current, tasks } = useTaskQuery(id)
+const Move: FC<{ id: string }> = ({ id }) => {
+  const models = useContext(ModelsContext)
+  const currentTask = models.task.tasks?.find((t) => t._id === id)
+  if (!currentTask) return <></>
+
   const { pinCategory } = useCategoryContext()
 
-  const currentIdx = (tasks || [])?.findIndex((t) => t._id === current._id)
+  const currentIdx = (models.task.tasks || [])?.findIndex(
+    (t) => t._id === currentTask._id
+  )
 
   const scopeTasks = useMemo(
-    () => pinCategory && tasks?.filter((t) => t.category._id === pinCategory),
-    [pinCategory, tasks]
+    () =>
+      pinCategory &&
+      models.task.tasks?.filter((t) => t.category._id === pinCategory),
+    [pinCategory, models.task.tasks]
   )
 
   const scopeIdx = useMemo(
     () =>
-      (scopeTasks as ITask[] | null)?.findIndex((t) => t._id === current._id) ||
-      0,
-    [scopeTasks, current]
+      (scopeTasks as ITask[] | null)?.findIndex(
+        (t) => t._id === currentTask._id
+      ) || 0,
+    [scopeTasks, currentTask]
   )
 
   const nextSwapHandler = () => {
     const next = scopeTasks
       ? scopeTasks[scopeIdx + 1]
-      : (tasks || [])[currentIdx + 1]
+      : (models.task.tasks || [])[currentIdx + 1]
 
     if (!next) return
-    swap({ _id: current._id, _id2: next._id })
+    models.task.swap({ _id: currentTask._id, _id2: next._id })
   }
 
   const prevSwapHandler = () => {
     const prev = scopeTasks
       ? scopeTasks[scopeIdx - 1]
-      : (tasks || [])[currentIdx - 1]
+      : (models.task.tasks || [])[currentIdx - 1]
 
     if (!prev) return
-    swap({ _id: current._id, _id2: prev._id })
+    models.task.swap({ _id: currentTask._id, _id2: prev._id })
   }
 
   const topSwapHandler = () => {
-    if (!tasks) return
+    if (!models.task.tasks) return
     if (currentIdx === 0) return
 
     const arr: number[] = [0]
-    tasks?.map((t) => arr.push(t.order))
+    models.task.tasks?.map((t) => arr.push(t.order))
 
-    update({
-      _id: current._id,
-      title: current.title,
-      description: current.description || "",
-      checked: current.checked,
-      category: current.category._id,
-      categoryColor: current.category.color,
+    models.task.update({
+      _id: currentTask._id,
+      title: currentTask.title,
+      description: currentTask.description || "",
+      checked: currentTask.checked,
+      category: currentTask.category._id,
+      categoryColor: currentTask.category.color,
       order: Math.max(...arr) + 1,
     })
   }
 
   const downSwapHandler = () => {
-    if (!tasks) return
-    if (currentIdx === tasks.length - 1) return
+    if (!models.task.tasks) return
+    if (currentIdx === models.task.tasks.length - 1) return
 
     const arr: number[] = [0]
-    tasks?.map((t) => arr.push(t.order))
+    models.task.tasks?.map((t) => arr.push(t.order))
 
-    update({
-      _id: current._id,
-      title: current.title,
-      description: current.description || "",
-      checked: current.checked,
-      category: current.category._id,
-      categoryColor: current.category.color,
+    models.task.update({
+      _id: currentTask._id,
+      title: currentTask.title,
+      description: currentTask.description || "",
+      checked: currentTask.checked,
+      category: currentTask.category._id,
+      categoryColor: currentTask.category.color,
       order: Math.min(...arr) - 1,
     })
   }

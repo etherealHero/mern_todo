@@ -1,8 +1,8 @@
-import { FC, MouseEventHandler, ReactNode } from "react"
-import { useCategoryQuery } from "./model"
+import { FC, MouseEventHandler, ReactNode, useContext } from "react"
 import { useTaskQuery } from ".."
 import { progressVariants } from "./lib"
 import { Icon, useCategoryContext } from "../../shared"
+import { ModelsContext } from "../../pages/Dashboard"
 
 interface ITaskProps {
   id: string
@@ -10,26 +10,28 @@ interface ITaskProps {
 }
 
 const Category: FC<ITaskProps> = ({ id, children }) => {
-  const { category } = useCategoryQuery(id)
+  const models = useContext(ModelsContext)
+  const currentCategory = models.category.categories?.find((c) => c._id === id)
+  if (!currentCategory) return <></>
   const { tasks } = useTaskQuery()
   const tasksByCategory =
-    tasks?.filter((t) => t.category._id === category._id) || []
+    tasks?.filter((t) => t.category._id === currentCategory._id) || []
 
   const { pinCategory, setPinCategory } = useCategoryContext()
 
   const pinCategoryHandler: MouseEventHandler<HTMLLIElement> = (e) => {
     if ((e.target as HTMLElement).closest(".dropdown")) return null
 
-    pinCategory === category._id
+    pinCategory === currentCategory._id
       ? setPinCategory(null)
-      : setPinCategory(category._id)
+      : setPinCategory(currentCategory._id)
   }
 
   return (
     <>
       <li
         className={`card card-compact shrink-0 w-56 bg-base-300/50 border border-transparent cursor-pointer ${
-          pinCategory === category._id &&
+          pinCategory === currentCategory._id &&
           "border !border-base-content/75 shadow-md shadow-base-content/20"
         }`}
         onClick={pinCategoryHandler}
@@ -38,12 +40,12 @@ const Category: FC<ITaskProps> = ({ id, children }) => {
         <div className="card-body">
           {tasksByCategory.length} tasks
           <h1 className="card-title ">
-            {category.title}{" "}
-            {pinCategory === category._id && <Icon type="pin" />}
+            {currentCategory.title}{" "}
+            {pinCategory === currentCategory._id && <Icon type="pin" />}
           </h1>
           <progress
             className={`progress w-full bg-gray-600/30 ${
-              progressVariants[category.color]
+              progressVariants[currentCategory.color]
             }`}
             value={tasksByCategory.filter((t) => t.checked).length}
             max={tasksByCategory.length}

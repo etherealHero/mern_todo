@@ -1,25 +1,21 @@
-import { FC, useContext, useEffect, useState } from "react"
-import { useCategoryQuery } from "../../entities"
+import { FC, useContext, useState } from "react"
 import { ModelsContext } from "../../pages/Dashboard"
+import { ICategory } from "../../entities"
 
 const EditCategory: FC<{ id: string }> = ({ id }) => {
-  const [title, setTitle] = useState<string>("")
-  const [color, setColor] = useState<string>("")
-  const { category } = useCategoryQuery(id)
-
-  useEffect(() => {
-    setTitle(category.title)
-    setColor(category.color)
-  }, [category])
-
   const models = useContext(ModelsContext)
+  const currentCategory =
+    models.category.categories?.find((c) => c._id === id) || ({} as ICategory)
+
+  const [title, setTitle] = useState<string>(currentCategory.title)
+  const [color, setColor] = useState<string>(currentCategory.title)
 
   const submitHandler = () => {
     models.category.update({
-      _id: category._id,
-      title: title || category.title,
-      color: color || category.color,
-      order: category.order,
+      _id: currentCategory._id,
+      title: title || currentCategory.title,
+      color: color || currentCategory.color,
+      order: currentCategory.order,
     })
 
     // updateColor(category._id, color)

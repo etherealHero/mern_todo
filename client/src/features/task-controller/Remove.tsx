@@ -1,10 +1,13 @@
-import { FC, MouseEventHandler } from "react"
+import { FC, MouseEventHandler, useContext } from "react"
 
 import { Icon } from "../../shared"
+import { ModelsContext } from "../../pages/Dashboard"
 
-const Remove: FC<{ id: string; remove: any }> = ({ id, remove }) => {
+const Remove: FC<{ id: string }> = ({ id }) => {
+  const models = useContext(ModelsContext)
+
   const removeHandler: MouseEventHandler<HTMLAnchorElement> = () => {
-    remove(id)
+    models.task.remove(id)
   }
 
   return (

@@ -1,20 +1,22 @@
-import { ChangeEventHandler, FC } from "react"
-import { useTaskQuery } from "../../entities"
+import { ChangeEventHandler, FC, useContext } from "react"
 
 import { checkboxVariants } from "./lib"
+import { ModelsContext } from "../../pages/Dashboard"
 
 const TaskToggle: FC<{ id: string }> = ({ id }) => {
-  const { task, update } = useTaskQuery(id)
+  const models = useContext(ModelsContext)
+  const currentTask = models.task.tasks?.find((t) => t._id === id)
+  if (!currentTask) return <></>
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = () => {
-    update({
-      _id: task._id,
-      title: task.title,
-      description: task.description || "",
-      category: task.category._id,
-      categoryColor: task.category.color,
-      order: task.order,
-      checked: !task.checked,
+    models.task.update({
+      _id: currentTask._id,
+      title: currentTask.title,
+      description: currentTask.description || "",
+      category: currentTask.category._id,
+      categoryColor: currentTask.category.color,
+      order: currentTask.order,
+      checked: !currentTask.checked,
     })
   }
 
@@ -22,9 +24,9 @@ const TaskToggle: FC<{ id: string }> = ({ id }) => {
     <input
       type="checkbox"
       className={`checkbox rounded-full border-[1px] ${
-        checkboxVariants[task.category.color]
+        checkboxVariants[currentTask.category.color]
       }`}
-      checked={task.checked}
+      checked={currentTask.checked}
       onChange={changeHandler}
     />
   )

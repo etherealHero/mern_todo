@@ -1,34 +1,27 @@
-import { useEffect, useRef } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { AddTask, TaskController, TaskToggle } from "../features"
-import { Task, useTaskQuery, useCategoryQuery, ITask } from "../entities"
+import { Task } from "../entities"
 import {
   Loader,
   useCategoryContext,
   useModalContext,
   useWindowSize,
 } from "../shared"
+import { ModelsContext } from "../pages/Dashboard"
 
-const Tasks = ({
-  tasks,
-  create,
-}: {
-  tasks: ITask[] | undefined
-  create: any
-}) => {
+const Tasks = () => {
   const ref = useRef<HTMLUListElement>(null)
   const [_, windowHeight] = useWindowSize()
-  const { categories } = useCategoryQuery()
+  const models = useContext(ModelsContext)
 
   useEffect(() => {
     if (!ref.current) return
     const coords = ref.current.getBoundingClientRect()
     ref.current.style.height = windowHeight - 16 - coords.top + "px"
-  }, [ref, windowHeight, categories])
-
-  const { isLoading, swap, remove, update } = useTaskQuery()
+  }, [ref, windowHeight, models.category.categories])
 
   const { setModalChild } = useModalContext()
-  const modalHandler = () => setModalChild(<AddTask create={create} />)
+  const modalHandler = () => setModalChild(<AddTask />)
 
   const { pinCategory } = useCategoryContext()
 
@@ -37,23 +30,23 @@ const Tasks = ({
       <div className="-mt-20 flex items-end gap-x-3 mb-4">
         <h2>Tasks</h2>
         <label
-          htmlFor={`${categories?.length && "my-modal"}`}
+          htmlFor={`${models.category.categories?.length && "my-modal"}`}
           className={`btn btn-sm
-            ${categories?.length && " btn-primary"}`}
+            ${models.category.categories?.length && " btn-primary"}`}
           onClick={modalHandler}
         >
           + Add
         </label>
       </div>
       <ul ref={ref} className="overflow-scroll ">
-        {isLoading ? (
+        {models.task.isLoading ? (
           <Loader />
-        ) : tasks?.filter((t) =>
+        ) : models.task.tasks?.filter((t) =>
             pinCategory ? t.category._id === pinCategory : t
           )?.length ? (
-          tasks.map(({ _id }) => (
+          models.task.tasks.map(({ _id }) => (
             <Task id={_id} key={_id}>
-              <TaskController id={_id} mutate={{ swap, remove, update }} />
+              <TaskController id={_id} />
               <TaskToggle id={_id} />
             </Task>
           ))

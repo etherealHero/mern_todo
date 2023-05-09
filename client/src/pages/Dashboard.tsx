@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom"
 
 import { Categories, Tasks } from "../widgets"
-import { useAuthContext, useTaskQuery } from "../entities"
-import { createContext, useState } from "react"
+import { useAuthContext } from "../entities"
+import { createContext } from "react"
 import { useModel } from "./lib"
 
 export const ModelsContext = createContext<ReturnType<typeof useModel>>(
@@ -15,7 +15,7 @@ const Dashboard = () => {
   if (!token) {
     return <Navigate to="/login" />
   }
-  const [_, invalidateQueryChache] = useState(false)
+  // const [_, invalidateQueryChache] = useState(false)
 
   // const queryClient = useQueryClient()
   // const { queryKey, remove: removeTask } = useTaskQuery()
@@ -53,32 +53,27 @@ const Dashboard = () => {
   //   invalidateQueryChache(false)
   // }
 
-  const { tasks, create: createTask } = useTaskQuery()
+  // const { tasks, create: createTask } = useTaskQuery()
 
-  interface newTask {
-    title: string
-    category: string
-    categoryColor: string
-    order: number
-    description?: string
-  }
+  // interface newTask {
+  //   title: string
+  //   category: string
+  //   categoryColor: string
+  //   order: number
+  //   description?: string
+  // }
 
-  const create = ({ ...args }: newTask) => {
-    invalidateQueryChache(true)
-    createTask(args)
-    invalidateQueryChache(false)
-  }
-
-  const model = useModel()
-  // if (!model) return <></>
+  // const create = ({ ...args }: newTask) => {
+  //   invalidateQueryChache(true)
+  //   createTask(args)
+  //   invalidateQueryChache(false)
+  // }
 
   return (
-    <ModelsContext.Provider value={model}>
-      <div className="max-w-2xl w-full mx-auto">
-        <Categories />
-        <Tasks tasks={tasks} create={create} />
-      </div>
-    </ModelsContext.Provider>
+    <div className="max-w-2xl w-full mx-auto">
+      <Categories />
+      <Tasks />
+    </div>
   )
 }
 

@@ -4,9 +4,7 @@ import { AddCategory, CategoryController } from "../features"
 import { Icon, Loader, useCategoryContext, useModalContext } from "../shared"
 import { ModelsContext } from "../pages/Dashboard"
 
-type Props = {}
-
-const Categories: FC<Props> = () => {
+const Categories: FC = () => {
   const models = useContext(ModelsContext)
 
   const { pinCategory, setPinCategory } = useCategoryContext()
@@ -14,8 +12,6 @@ const Categories: FC<Props> = () => {
   const { setModalChild } = useModalContext()
   const modalHandler = () =>
     setModalChild(<AddCategory create={models.category.create} />)
-
-  // model
 
   return (
     <>

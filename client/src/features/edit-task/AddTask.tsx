@@ -1,24 +1,25 @@
-import { useEffect, useState } from "react"
-import { ICategory, useCategoryQuery, useTaskQuery } from "../../entities"
+import { useContext, useEffect, useState } from "react"
+import { ICategory } from "../../entities"
 import { dotVariants } from "./lib"
+import { ModelsContext } from "../../pages/Dashboard"
 
-const AddTask = ({ create }: { create: any }) => {
+const AddTask = () => {
+  const models = useContext(ModelsContext)
+
   const [form, setForm] = useState({ title: "", description: "" })
-  const { tasks } = useTaskQuery()
-  const { categories } = useCategoryQuery()
   const [category, setCategory] = useState<ICategory>()
 
   useEffect(() => {
-    setCategory((categories as ICategory[])[0])
-  }, [categories])
+    setCategory((models.category.categories as ICategory[])[0])
+  }, [models.category.categories])
 
   const submitHandler = () => {
     const arr: number[] = [0]
-    tasks?.map((t) => arr.push(t.order))
+    models.task.tasks?.map((t) => arr.push(t.order))
 
     const maxOrder = Math.max(...arr)
 
-    create({
+    models.task.create({
       ...form,
       category: (category as ICategory)._id,
       categoryColor: (category as ICategory).color,
@@ -67,7 +68,7 @@ const AddTask = ({ create }: { create: any }) => {
             tabIndex={0}
             className="dropdown-content menu menu-compact flex-nowrap overflow-scroll bg-base-300 h-44 p-2 shadow rounded-box w-40"
           >
-            {categories?.map((c) => (
+            {models.category.categories?.map((c) => (
               <li key={c._id} onClick={() => setCategory(c)}>
                 <a>{c.title}</a>
               </li>

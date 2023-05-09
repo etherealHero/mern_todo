@@ -1,14 +1,14 @@
-import { useState } from "react"
-import { useCategoryQuery } from "../../entities"
+import { useContext, useState } from "react"
+import { ModelsContext } from "../../pages/Dashboard"
 
 const AddCategory = ({ create }: { create: any }) => {
   const [title, setTitle] = useState<string>("")
   const [color, setColor] = useState<string>("error")
-  const { categories } = useCategoryQuery()
+  const models = useContext(ModelsContext)
 
   const submitHandler = () => {
     const arr: number[] = [0]
-    categories?.map((c) => arr.push(c.order))
+    models.category.categories?.map((c) => arr.push(c.order))
 
     const maxOrder = Math.max(...arr)
 
