@@ -10,7 +10,6 @@ const Remove: FC<Props> = ({ id }) => {
   const { pinCategory, setPinCategory } = useCategoryContext()
 
   const models = useContext(ModelsContext)
-  if (!models) return <></>
 
   const removeHandler: MouseEventHandler<HTMLAnchorElement> = () => {
     if (pinCategory === id) setPinCategory(null)

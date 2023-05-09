@@ -13,7 +13,6 @@ const EditCategory: FC<{ id: string }> = ({ id }) => {
   }, [category])
 
   const models = useContext(ModelsContext)
-  if (!models) return <></>
 
   const submitHandler = () => {
     models.category.update({

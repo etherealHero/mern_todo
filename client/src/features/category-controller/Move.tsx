@@ -4,7 +4,6 @@ import { ModelsContext } from "../../pages/Dashboard"
 
 const Move: FC<{ id: string }> = ({ id }) => {
   const models = useContext(ModelsContext)
-  if (!models) return <></>
 
   const current = models.category.categories?.find((c) => c._id === id)
 

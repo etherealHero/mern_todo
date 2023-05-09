@@ -8,7 +8,6 @@ type Props = {}
 
 const Categories: FC<Props> = () => {
   const models = useContext(ModelsContext)
-  if (!models) return <></>
 
   const { pinCategory, setPinCategory } = useCategoryContext()
 

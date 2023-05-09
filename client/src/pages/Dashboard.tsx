@@ -1,14 +1,12 @@
 import { Navigate } from "react-router-dom"
 
 import { Categories, Tasks } from "../widgets"
-import { ITask, useAuthContext, useTaskQuery } from "../entities"
-import { useQueryClient } from "@tanstack/react-query"
+import { useAuthContext, useTaskQuery } from "../entities"
 import { createContext, useState } from "react"
 import { useModel } from "./lib"
-import { Loader } from "../shared"
 
-export const ModelsContext = createContext<ReturnType<typeof useModel> | null>(
-  null
+export const ModelsContext = createContext<ReturnType<typeof useModel>>(
+  {} as ReturnType<typeof useModel>
 )
 
 const Dashboard = () => {
@@ -72,7 +70,7 @@ const Dashboard = () => {
   }
 
   const model = useModel()
-  if (!model) return <></>
+  // if (!model) return <></>
 
   return (
     <ModelsContext.Provider value={model}>
