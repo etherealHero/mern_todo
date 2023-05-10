@@ -1,8 +1,10 @@
 import { Navigate } from "react-router-dom"
-
-import { Categories, Tasks } from "../widgets"
-import { useAuthContext } from "../entities"
 import { createContext } from "react"
+
+import { Categories, Tasks, Drawer, Navbar } from "../widgets"
+import { useAuthContext } from "../entities"
+import { Layout } from "../shared"
+
 import { useModel } from "./lib"
 
 export const ModelsContext = createContext<ReturnType<typeof useModel>>(
@@ -70,10 +72,12 @@ const Dashboard = () => {
   // }
 
   return (
-    <div className="max-w-2xl w-full mx-auto">
-      <Categories />
-      <Tasks />
-    </div>
+    <Layout drawer={<Drawer />} navbar={<Navbar />}>
+      <div className="max-w-2xl w-full mx-auto">
+        <Categories />
+        <Tasks />
+      </div>
+    </Layout>
   )
 }
 
