@@ -21,9 +21,10 @@ const Tasks = () => {
   }, [ref, windowHeight, models.category.categories])
 
   const { setModalChild } = useModalContext()
-  const modalHandler = () => setModalChild(<AddTask />)
 
   const { pinCategory } = useCategoryContext()
+  const modalHandler = () =>
+    setModalChild(<AddTask pinCategory={pinCategory} />)
 
   return (
     <>

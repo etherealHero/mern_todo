@@ -54,7 +54,7 @@ const EditTask: FC<{ id: string }> = ({ id }) => {
           <span className="label-text">Description</span>
         </label>
         <textarea
-          className="textarea textarea-bordered h-24 resize-none"
+          className="textarea textarea-bordered h-24 resize-none leading-5"
           placeholder="Enter description"
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}

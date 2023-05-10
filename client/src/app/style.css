@@ -17,7 +17,7 @@
 
 @layer base {
   * {
-    @apply select-none scrollbar-hide outline-none;
+    @apply select-none scrollbar-hide outline-none break-words;
   }
 
   html,

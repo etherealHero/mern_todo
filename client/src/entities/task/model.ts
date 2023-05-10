@@ -16,7 +16,7 @@ export interface ITask {
   __v?: 0
 }
 
-export const useTaskQuery = () => {
+export const useTaskQuery = (permission: boolean) => {
   const { getTasks, patchTast, removeTask, postTask, swapTask } = useTaskApi()
 
   const { token } = useAuthContext()
@@ -25,6 +25,7 @@ export const useTaskQuery = () => {
   const { isLoading } = useQuery<ITask[]>({
     queryKey,
     queryFn: getTasks,
+    enabled: permission,
   })
 
   const queryClient = useQueryClient()

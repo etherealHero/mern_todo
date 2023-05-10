@@ -44,13 +44,16 @@ const Task: FC<ITaskProps> = ({ id, children }) => {
               {category.title}
             </span>
           )}
-          <p
-            className={`text-base-content/50 mt-0 break-words ${
-              task.checked && "line-through"
-            }`}
-          >
-            {task.description}
-          </p>
+          {task.description?.split("\n").map((line, idx) => (
+            <p
+              className={`text-base-content/50 mt-0 break-words ${
+                task.checked && "line-through"
+              }`}
+              key={idx}
+            >
+              {line}
+            </p>
+          ))}
         </div>
         {/* DEVELOPMENT */}
         {/* <span className="badge badge-accent badge-outline absolute right-8">

@@ -43,7 +43,7 @@ const CategoryController: FC<Props> = ({ id }) => {
             </a>
           </li>
           {isMove && <Move id={id} />}
-          <li>
+          <li className="mb-3 relative after:content['*'] after:w-full after:h-[1px] after:bg-base-content/20 after:absolute after:-bottom-[7px]">
             <label onClick={modalHandler} htmlFor="my-modal" className="px-2">
               <Icon type="edit" />
               Изменить

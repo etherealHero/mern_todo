@@ -37,7 +37,7 @@ export const useModelsContext = () => useContext(ModelsContext)
 export const useCategoryContext = () => useContext(CategoryContext)
 
 const Layout: FC<ILayout> = ({ children, drawer, navbar }) => {
-  const [modalChild, setModalChild] = useState<ReactNode>()
+  const [modalChild, setModalChild] = useState<ReactNode | null>(null)
   const [pinCategory, setPinCategory] = useState<string | null>(null)
 
   const { token } = useAuthContext()

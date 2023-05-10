@@ -1,17 +1,22 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ICategory } from "../../entities"
 import { dotVariants } from "./lib"
-import { useModelsContext } from "../../shared/layout/Layout"
+import {
+  useCategoryContext,
+  useModelsContext,
+} from "../../shared/layout/Layout"
 
-const AddTask = () => {
+const AddTask = ({}: { pinCategory?: string | null }) => {
   const models = useModelsContext()
 
-  const [form, setForm] = useState({ title: "", description: "" })
-  const [category, setCategory] = useState<ICategory>()
+  const { pinCategory } = useCategoryContext()
 
-  useEffect(() => {
-    setCategory((models.category.categories as ICategory[])[0])
-  }, [models.category.categories])
+  const [form, setForm] = useState({ title: "", description: "" })
+  const [category, setCategory] = useState<ICategory>(
+    (models.category.categories?.find(
+      (c) => c._id === pinCategory
+    ) as ICategory) || (models.category.categories as ICategory[])[0]
+  )
 
   const submitHandler = () => {
     const arr: number[] = [0]
