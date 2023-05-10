@@ -1,10 +1,10 @@
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { ICategory } from "../../entities"
 import { dotVariants } from "./lib"
-import { ModelsContext } from "../../pages/Dashboard"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 const EditTask: FC<{ id: string }> = ({ id }) => {
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
   const currentTask = models.task?.tasks?.find((t) => t._id === id)
   if (!currentTask) return <></>
 

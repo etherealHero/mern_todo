@@ -1,9 +1,9 @@
-import { FC, useContext, useState } from "react"
-import { ModelsContext } from "../../pages/Dashboard"
+import { FC, useState } from "react"
 import { ICategory } from "../../entities"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 const EditCategory: FC<{ id: string }> = ({ id }) => {
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
   const currentCategory =
     models.category.categories?.find((c) => c._id === id) || ({} as ICategory)
 

@@ -1,7 +1,6 @@
 import { FC, ReactNode } from "react"
-import { useTaskQuery } from "./model"
-import { useCategoryQuery } from ".."
 import { useCategoryContext } from "../../shared"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 interface ITaskProps {
   id: string
@@ -9,8 +8,13 @@ interface ITaskProps {
 }
 
 const Task: FC<ITaskProps> = ({ id, children }) => {
-  const { task } = useTaskQuery(id)
-  const { category } = useCategoryQuery(task.category._id)
+  const models = useModelsContext()
+  const task = models.task.tasks?.find((t) => t._id === id)
+  if (!task) return <></>
+  const category = models.category.categories?.find(
+    (c) => c._id === task.category._id
+  )
+  if (!category) return <></>
 
   const { pinCategory } = useCategoryContext()
 

@@ -1,9 +1,9 @@
 import type { ICategory } from "./model"
 import { API_URL } from "../../shared"
-import { useAuth } from "../auth/useAuth"
+import { useAuthContext } from ".."
 
 export const useCategoryApi = () => {
-  const { token } = useAuth()
+  const { token } = useAuthContext()
 
   const getCategories = () => {
     return fetch(`${API_URL}/category`, {

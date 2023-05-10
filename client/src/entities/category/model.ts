@@ -10,15 +10,7 @@ export interface ICategory {
   owner: string
 }
 
-const noop: ICategory = {
-  _id: "",
-  title: "",
-  color: "",
-  order: 0,
-  owner: "",
-}
-
-export const useCategoryQuery = (id?: string) => {
+export const useCategoryQuery = () => {
   const {
     getCategories,
     patchCategory,
@@ -164,7 +156,6 @@ export const useCategoryQuery = (id?: string) => {
 
   return {
     categories,
-    category: categories?.find((c) => c._id === id) || noop,
     update,
     remove,
     swap,

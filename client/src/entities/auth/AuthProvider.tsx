@@ -6,6 +6,7 @@ interface IAuth {
   token: string | null
   login: (jwtToken: string) => void
   logout: () => void
+  ready: boolean
 }
 
 function noop() {}
@@ -14,6 +15,7 @@ const initAuthContext: IAuth = {
   token: null,
   login: noop,
   logout: noop,
+  ready: false,
 }
 
 const AuthContext = createContext<IAuth>(initAuthContext)
@@ -26,7 +28,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   if (!ready) return <Loader />
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ token, login, logout, ready }}>
       {children}
     </AuthContext.Provider>
   )

@@ -1,11 +1,11 @@
-import { FC, useContext } from "react"
+import { FC } from "react"
 import { Category } from "../entities"
 import { AddCategory, CategoryController } from "../features"
 import { Icon, Loader, useCategoryContext, useModalContext } from "../shared"
-import { ModelsContext } from "../pages/Dashboard"
+import { useModelsContext } from "../shared/layout/Layout"
 
 const Categories: FC = () => {
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
 
   const { pinCategory, setPinCategory } = useCategoryContext()
 

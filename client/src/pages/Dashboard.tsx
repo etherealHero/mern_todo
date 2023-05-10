@@ -1,22 +1,6 @@
-import { Navigate } from "react-router-dom"
-import { createContext } from "react"
-
-import { Categories, Tasks, Drawer, Navbar } from "../widgets"
-import { useAuthContext } from "../entities"
-import { Layout } from "../shared"
-
-import { useModel } from "./lib"
-
-export const ModelsContext = createContext<ReturnType<typeof useModel>>(
-  {} as ReturnType<typeof useModel>
-)
+import { Categories, Tasks } from "../widgets"
 
 const Dashboard = () => {
-  const { token } = useAuthContext()
-
-  if (!token) {
-    return <Navigate to="/login" />
-  }
   // const [_, invalidateQueryChache] = useState(false)
 
   // const queryClient = useQueryClient()
@@ -72,12 +56,10 @@ const Dashboard = () => {
   // }
 
   return (
-    <Layout drawer={<Drawer />} navbar={<Navbar />}>
-      <div className="max-w-2xl w-full mx-auto">
-        <Categories />
-        <Tasks />
-      </div>
-    </Layout>
+    <div className="max-w-2xl w-full mx-auto">
+      <Categories />
+      <Tasks />
+    </div>
   )
 }
 

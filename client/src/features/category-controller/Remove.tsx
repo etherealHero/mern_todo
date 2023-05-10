@@ -1,6 +1,6 @@
-import { FC, MouseEventHandler, useContext } from "react"
+import { FC, MouseEventHandler } from "react"
 import { Icon, useCategoryContext } from "../../shared"
-import { ModelsContext } from "../../pages/Dashboard"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 type Props = {
   id: string
@@ -9,7 +9,7 @@ type Props = {
 const Remove: FC<Props> = ({ id }) => {
   const { pinCategory, setPinCategory } = useCategoryContext()
 
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
 
   const removeHandler: MouseEventHandler<HTMLAnchorElement> = () => {
     if (pinCategory === id) setPinCategory(null)

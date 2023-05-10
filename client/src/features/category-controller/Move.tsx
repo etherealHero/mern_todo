@@ -1,9 +1,9 @@
-import { FC, useContext } from "react"
+import { FC } from "react"
 import { Icon } from "../../shared"
-import { ModelsContext } from "../../pages/Dashboard"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 const Move: FC<{ id: string }> = ({ id }) => {
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
 
   const current = models.category.categories?.find((c) => c._id === id)
 

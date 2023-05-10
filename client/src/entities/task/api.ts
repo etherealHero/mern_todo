@@ -1,9 +1,9 @@
 import type { ITask } from "./model"
 import { API_URL } from "../../shared"
-import { useAuth } from "../auth/useAuth"
+import { useAuthContext } from ".."
 
 export const useTaskApi = () => {
-  const { token } = useAuth()
+  const { token } = useAuthContext()
 
   const getTasks = () => {
     return fetch(`${API_URL}/task`, {

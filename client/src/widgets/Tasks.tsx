@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { AddTask, TaskController, TaskToggle } from "../features"
 import { Task } from "../entities"
 import {
@@ -7,12 +7,12 @@ import {
   useModalContext,
   useWindowSize,
 } from "../shared"
-import { ModelsContext } from "../pages/Dashboard"
+import { useModelsContext } from "../shared/layout/Layout"
 
 const Tasks = () => {
   const ref = useRef<HTMLUListElement>(null)
   const [_, windowHeight] = useWindowSize()
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
 
   useEffect(() => {
     if (!ref.current) return

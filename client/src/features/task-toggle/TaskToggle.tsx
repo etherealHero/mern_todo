@@ -1,10 +1,10 @@
-import { ChangeEventHandler, FC, useContext } from "react"
+import { ChangeEventHandler, FC } from "react"
 
 import { checkboxVariants } from "./lib"
-import { ModelsContext } from "../../pages/Dashboard"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 const TaskToggle: FC<{ id: string }> = ({ id }) => {
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
   const currentTask = models.task.tasks?.find((t) => t._id === id)
   if (!currentTask) return <></>
 

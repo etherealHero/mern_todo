@@ -16,21 +16,7 @@ export interface ITask {
   __v?: 0
 }
 
-const noop: ITask = {
-  _id: "",
-  title: "",
-  owner: "",
-  category: {
-    _id: "",
-    color: "secondary",
-  },
-  order: 0,
-  checked: false,
-  __v: 0,
-  description: "",
-}
-
-export const useTaskQuery = (id?: string) => {
+export const useTaskQuery = () => {
   const { getTasks, patchTast, removeTask, postTask, swapTask } = useTaskApi()
 
   const { token } = useAuthContext()
@@ -180,7 +166,6 @@ export const useTaskQuery = (id?: string) => {
 
   return {
     tasks,
-    task: tasks?.find((t) => t._id === id) || noop,
     update,
     remove,
     swap,

@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { ICategory } from "../../entities"
 import { dotVariants } from "./lib"
-import { ModelsContext } from "../../pages/Dashboard"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 const AddTask = () => {
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
 
   const [form, setForm] = useState({ title: "", description: "" })
   const [category, setCategory] = useState<ICategory>()

@@ -1,10 +1,10 @@
-import { useContext, useState } from "react"
-import { ModelsContext } from "../../pages/Dashboard"
+import { useState } from "react"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 const AddCategory = ({ create }: { create: any }) => {
   const [title, setTitle] = useState<string>("")
   const [color, setColor] = useState<string>("error")
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
 
   const submitHandler = () => {
     const arr: number[] = [0]

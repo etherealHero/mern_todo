@@ -8,8 +8,9 @@ import {
   useState,
 } from "react"
 import { Modal, ModalContext } from "./Modal"
-import { ModelsContext } from "../../pages/Dashboard"
 import { useModel } from "../../pages/lib"
+import { useAuthContext } from "../../entities"
+import { Navigate } from "react-router-dom"
 
 interface ILayout {
   children: ReactNode
@@ -27,11 +28,23 @@ export const CategoryContext = createContext<ICategoryContext>({
   setPinCategory: () => {},
 })
 
+const ModelsContext = createContext<ReturnType<typeof useModel>>(
+  {} as ReturnType<typeof useModel>
+)
+
+export const useModelsContext = () => useContext(ModelsContext)
+
 export const useCategoryContext = () => useContext(CategoryContext)
 
 const Layout: FC<ILayout> = ({ children, drawer, navbar }) => {
   const [modalChild, setModalChild] = useState<ReactNode>()
   const [pinCategory, setPinCategory] = useState<string | null>(null)
+
+  const { token } = useAuthContext()
+
+  if (!token) {
+    return <Navigate to="/login" />
+  }
 
   const model = useModel()
 

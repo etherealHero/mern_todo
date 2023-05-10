@@ -1,8 +1,7 @@
-import { FC, MouseEventHandler, ReactNode, useContext } from "react"
-import { useTaskQuery } from ".."
+import { FC, MouseEventHandler, ReactNode } from "react"
 import { progressVariants } from "./lib"
 import { Icon, useCategoryContext } from "../../shared"
-import { ModelsContext } from "../../pages/Dashboard"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 interface ITaskProps {
   id: string
@@ -10,12 +9,12 @@ interface ITaskProps {
 }
 
 const Category: FC<ITaskProps> = ({ id, children }) => {
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
   const currentCategory = models.category.categories?.find((c) => c._id === id)
   if (!currentCategory) return <></>
-  const { tasks } = useTaskQuery()
   const tasksByCategory =
-    tasks?.filter((t) => t.category._id === currentCategory._id) || []
+    models.task.tasks?.filter((t) => t.category._id === currentCategory._id) ||
+    []
 
   const { pinCategory, setPinCategory } = useCategoryContext()
 

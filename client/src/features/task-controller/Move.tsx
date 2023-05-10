@@ -1,10 +1,10 @@
-import { FC, useContext, useMemo } from "react"
+import { FC, useMemo } from "react"
 import { Icon, useCategoryContext } from "../../shared"
 import { ITask } from "../../entities"
-import { ModelsContext } from "../../pages/Dashboard"
+import { useModelsContext } from "../../shared/layout/Layout"
 
 const Move: FC<{ id: string }> = ({ id }) => {
-  const models = useContext(ModelsContext)
+  const models = useModelsContext()
   const currentTask = models.task.tasks?.find((t) => t._id === id)
   if (!currentTask) return <></>
 
