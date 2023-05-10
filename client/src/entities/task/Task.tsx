@@ -41,7 +41,9 @@ const Task: FC<ITaskProps> = ({ id, children }) => {
             ${task.checked && "opacity-40"}
           `}
             >
-              {category.title}
+              <span className="whitespace-nowrap max-w-[75px] overflow-hidden justify-start">
+                {category.title}
+              </span>
             </span>
           )}
           {task.description?.split("\n").map((line, idx) => (

@@ -1,7 +1,7 @@
 import { FC, MouseEventHandler, ReactNode } from "react"
-import { progressVariants } from "./lib"
 import { Icon, useCategoryContext } from "../../shared"
 import { useModelsContext } from "../../shared/layout/Layout"
+import { progressVariants } from "./lib"
 
 interface ITaskProps {
   id: string
@@ -37,18 +37,38 @@ const Category: FC<ITaskProps> = ({ id, children }) => {
       >
         {children}
         <div className="card-body">
-          {tasksByCategory.length} tasks
+          {tasksByCategory.filter((t) => t.checked).length ? (
+            <span>
+              {tasksByCategory.filter((t) => t.checked).length}
+              <span className="text-base-content/50">
+                /{tasksByCategory.length} tasks
+              </span>
+            </span>
+          ) : (
+            tasksByCategory.length + " tasks"
+          )}
+
           <h1 className="card-title ">
-            {currentCategory.title}{" "}
+            <span className="whitespace-nowrap max-w-[160px] overflow-hidden">
+              {currentCategory.title}
+            </span>{" "}
             {pinCategory === currentCategory._id && <Icon type="pin" />}
           </h1>
-          <progress
-            className={`progress w-full bg-gray-600/30 ${
-              progressVariants[currentCategory.color]
-            }`}
-            value={tasksByCategory.filter((t) => t.checked).length}
-            max={tasksByCategory.length}
-          ></progress>
+          <div className="bg-base-content/10 w-full h-2 rounded-full">
+            <div
+              className={`h-2 absolute bottom-4 rounded-l-full
+              after:content[''] after:absolute after:right-0 after:-top-1 after:rounded-full 
+              after:w-[3px] after:h-4 after:translate-x-3/4
+              ${progressVariants[currentCategory.color]}
+              `}
+              style={{
+                width: `${
+                  (190 / tasksByCategory.length) *
+                  tasksByCategory.filter((t) => t.checked).length
+                }px`,
+              }}
+            />
+          </div>
         </div>
       </li>
     </>

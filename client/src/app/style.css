@@ -17,12 +17,12 @@
 
 @layer base {
   * {
-    @apply select-none scrollbar-hide outline-none break-words;
+    @apply select-none scrollbar-hide outline-none break-all;
   }
 
   html,
   body {
-    @apply h-full overflow-hidden bg-base-100 backdrop-brightness-125;
+    @apply h-full overflow-hidden bg-base-100 backdrop-brightness-125 fixed top-0 right-0 left-0 bottom-0 touch-none;
   }
 
   h1 {

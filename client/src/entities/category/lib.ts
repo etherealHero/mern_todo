@@ -1,9 +1,9 @@
 export const progressVariants: { [index: string]: string } = {
-  accent: "progress-accent",
-  primary: "progress-primary",
-  secondary: "progress-secondary",
-  info: "progress-info",
-  success: "progress-success",
-  warning: "progress-warning",
-  error: "progress-error",
+  accent: "after:bg-accent bg-accent",
+  primary: "after:bg-primary bg-primary",
+  secondary: "after:bg-secondary bg-secondary",
+  info: "after:bg-info bg-info",
+  success: "after:bg-success bg-success",
+  warning: "after:bg-warning bg-warning",
+  error: "after:bg-error bg-error",
 }
