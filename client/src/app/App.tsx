@@ -3,9 +3,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import { Dashboard, Login, Registraion } from "../pages"
-import { Drawer, Navbar } from "../widgets"
 import { AuthProvider, ThemeProvider } from "../entities"
-import { Layout } from "../shared"
 
 const client = new QueryClient({
   defaultOptions: {
@@ -23,14 +21,7 @@ function App() {
         <QueryClientProvider client={client}>
           <BrowserRouter>
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <Layout drawer={<Drawer />} navbar={<Navbar />}>
-                    <Dashboard />
-                  </Layout>
-                }
-              />
+              <Route path="/" element={<Dashboard />} />
               <Route path="/login" element={<Login />} />
               <Route path="/registration" element={<Registraion />} />
             </Routes>

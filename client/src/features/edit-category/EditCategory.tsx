@@ -1,6 +1,7 @@
 import { FC, useState } from "react"
-import { ICategory } from "../../entities"
+import { ICategory, ITask } from "../../entities"
 import { useModelsContext } from "../../shared/layout/Layout"
+import { useQueryClient } from "@tanstack/react-query"
 
 const EditCategory: FC<{ id: string }> = ({ id }) => {
   const models = useModelsContext()
@@ -8,17 +9,36 @@ const EditCategory: FC<{ id: string }> = ({ id }) => {
     models.category.categories?.find((c) => c._id === id) || ({} as ICategory)
 
   const [title, setTitle] = useState<string>(currentCategory.title)
-  const [color, setColor] = useState<string>(currentCategory.title)
+  const [color, setColor] = useState<string>(currentCategory.color)
+
+  const queryClient = useQueryClient()
+
+  const updateTasksColor = (_id: string, color: string) => {
+    queryClient.setQueryData<ITask[]>(models.task.queryKey, (tasks) =>
+      (tasks || []).map((t) => {
+        if (t.category._id === _id)
+          return {
+            ...t,
+            category: {
+              _id: _id,
+              color,
+            },
+          }
+
+        return t
+      })
+    )
+  }
 
   const submitHandler = () => {
+    updateTasksColor(currentCategory._id, color)
+
     models.category.update({
       _id: currentCategory._id,
       title: title || currentCategory.title,
       color: color || currentCategory.color,
       order: currentCategory.order,
     })
-
-    // updateColor(category._id, color)
 
     setTitle("")
   }
