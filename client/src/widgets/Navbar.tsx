@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../entities"
 import { Logout, ThemeToggle } from "../features"
 
 const Navbar = () => {
   const { token } = useAuthContext()
-  const navigate = useNavigate()
 
   return (
     // <div className="navbar bg-base-300 text-base-content">
@@ -50,12 +48,12 @@ const Navbar = () => {
               tabIndex={0}
               className="menu menu-compact  dropdown-content mt-3 p-2 shadow bg-base-100 text-base-content rounded-box w-48"
             >
-              <li>
+              {/* <li>
                 <a className="justify-between" onClick={() => navigate("/")}>
                   Dashboard
                   <span className="badge">New</span>
                 </a>
-              </li>
+              </li> */}
               <li>
                 <Logout />
               </li>

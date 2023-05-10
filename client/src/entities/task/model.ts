@@ -25,8 +25,6 @@ export const useTaskQuery = () => {
   const { isLoading } = useQuery<ITask[]>({
     queryKey,
     queryFn: getTasks,
-    staleTime: Infinity,
-    cacheTime: Infinity,
   })
 
   const queryClient = useQueryClient()

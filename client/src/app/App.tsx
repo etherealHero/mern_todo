@@ -7,7 +7,14 @@ import { Drawer, Navbar } from "../widgets"
 import { AuthProvider, ThemeProvider } from "../entities"
 import { Layout } from "../shared"
 
-const client = new QueryClient()
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      cacheTime: Infinity,
+    },
+  },
+})
 
 function App() {
   return (

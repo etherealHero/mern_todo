@@ -25,8 +25,6 @@ export const useCategoryQuery = () => {
   const { isLoading } = useQuery<ICategory[]>({
     queryKey: queryKey,
     queryFn: getCategories,
-    staleTime: Infinity,
-    cacheTime: Infinity,
   })
 
   const queryClient = useQueryClient()
